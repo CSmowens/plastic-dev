@@ -1,0 +1,26 @@
+    Todo list
+
+
+- Passer le projet sous CMake
+
+- Tout documenter
+- Resoudre toutes les erreurs de la documentation dans Plastic
+- Passer sous g++-4.6
+- Utiliser nullptr
+- Utiliser les fonctions glTexStorage* dans UploaderTexture::allocateMemory()
+
+
+
+
+
+
+
+
+
+    Penser à faire:
+
+- Système de texture:
+    - Faire en sorte de charger les textures le moins de fois possible en utilisant des GL_TEXTURE0 + i, 
+     en faisant varier i selon les possibilités de l'implementation OpenGL.
+    - Lors du bind des textures, verifier que le sampler concorde au niveau des mipmaps et des filtres utilisés!!!
+    - Pareil si on utilise un SamplerCompareMode voir si c'est une depth texture

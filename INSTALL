@@ -1,0 +1,29 @@
+        Install Plastic
+
+
+Installer "libx11-dev".
+    sudo apt-get install libx11-dev
+
+
+Installer les pilotes graphiques.
+
+
+Copier les dossiers "GL" et "GL3" dans le repertoire "/usr/include".
+
+
+Compilation et installation de Plastic
+    cd plastic/build/make
+    sudo make
+    sudo make install
+    sudo make mrproper
+
+
+Pour la documentation
+    sudo apt-get install doxygen texlive-latex-base
+    cd plastic/doc/build
+    doxygen
+
+Autres softs utiles 
+    sudo apt-get install valgrind gimp gimp-dds gimp-normalmap
+
+
