@@ -9,6 +9,9 @@ Plastic:
     
     - Utiliser delegating constructor une fois disponible
 
+
+Demo:
+    - Ajouter une démo contenant plusieurs techniques
     - Ajouter une démo de post-processing
 
 
@@ -22,13 +25,13 @@ Gui:
     
 
 Graphics:
-    - Ajouter une classe qui charge les extensions
+    - Ajouter une classe qui charge les extensions OpenGL
     - Implémenter SceneManager de façon basique
     
 
 HardwareBuffer:
     - Renommer la classe
-    - Déresponsabilisé de la classe Shader(Program)
+    - Déresponsabilisé de la classe Program
 
 
 Geometry:
@@ -47,16 +50,19 @@ MediaManager:
     
 
 Shader:
-    - Renommer Shader en Program
-    - Program devra se construire à partir de Shader
     - Ajouter Geometry Shader
-    - Ajouter la tesselation
+    - Ajoutes shaders de la tesselation
+
+
+Program:
+    - Ajouter la gestion de la tesselation
     - Recupérer les out du fragement shader
     - Gestion Uniforn Buffer Object
 
 
 RenderTarget:
     - Ajouter les fonctions pour clear
+
 
 RenderTexure:
     - Implémenter une première version
@@ -82,6 +88,9 @@ Sampler:
 
 XML:
     - Reimplémenter pour être memory-safe
+
+
+
 
 
 
