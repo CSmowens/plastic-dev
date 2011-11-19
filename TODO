@@ -5,6 +5,7 @@ Plastic:
     - Utiliser nullptr
     - Passer a CMake
     - S'occuper de la documentation
+    - Remplir le README
     
     - Utiliser delegating constructor une fois disponible
 

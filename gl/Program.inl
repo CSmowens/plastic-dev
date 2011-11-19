@@ -32,7 +32,7 @@ namespace plt
 {
 
     template<typename T>
-    inline void Shader::setParameter
+    inline void Program::setParameter
     (
         const std::string &name, 
         const T &param

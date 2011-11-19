@@ -40,6 +40,7 @@
 
 #include "Geometry.hpp"
 #include "Sampler.hpp"
+#include "Shader.hpp"
 #include "VertexElement.hpp"
 
 #include <vector>
@@ -68,6 +69,8 @@ namespace plt
         static GLenum getCompareMode(SamplerCompareMode mode);
         static GLenum getCompareFunc(SamplerCompareFunc func);
 
+        static GLenum getShaderType(ShaderType type);
+
         static GLenum getType(VertexElementType type);
 
     private:
@@ -89,6 +92,8 @@ namespace plt
         static const std::vector<GLenum> m_samplerMagFilter;
         static const std::vector<GLenum> m_samplerCompareMode;
         static const std::vector<GLenum> m_samplerCompareFunc;
+
+        static const std::vector<GLenum> m_shaderTypes;
 
         static const std::vector<GLenum> m_vertexElementsTypes;
     };

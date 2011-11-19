@@ -149,8 +149,7 @@ namespace plt
 
 
     const std::vector<GLenum> GLEnum::m_samplerCompareFunc =
-    {
-        
+    {    
         GL_LEQUAL,
         GL_GEQUAL,
         GL_LESS,
@@ -160,6 +159,14 @@ namespace plt
         GL_ALWAYS,
         GL_NEVER
     };
+
+
+    const std::vector<GLenum> GLEnum::m_shaderTypes =
+    {
+        GL_VERTEX_SHADER,
+        GL_FRAGMENT_SHADER
+    };
+
 
 
     const std::vector<GLenum> GLEnum::m_vertexElementsTypes =
@@ -259,6 +266,12 @@ namespace plt
     GLenum GLEnum::getCompareFunc(SamplerCompareFunc func)
     {
         return m_samplerCompareFunc[ static_cast<std::size_t>(func) ];
+    }
+
+
+    GLenum GLEnum::getShaderType(ShaderType type)
+    {
+        return m_shaderTypes[ static_cast<std::size_t>(type) ];
     }
 
 

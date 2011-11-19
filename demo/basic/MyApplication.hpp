@@ -5,7 +5,7 @@
 
 #include "../../gl/Geometry.hpp"
 #include "../../gl/HardwareBuffer.hpp"
-#include "../../gl/Shader.hpp"
+#include "../../gl/Program.hpp"
 
 #include <memory>
 
@@ -32,7 +32,7 @@ namespace plt
 
         std::shared_ptr<Geometry> m_geomRepere;
 
-        std::shared_ptr<Shader> m_shaderRepere;
+        std::shared_ptr<Program> m_programRepere;
 
         std::shared_ptr<HardwareBuffer> m_hbRepere;
     };

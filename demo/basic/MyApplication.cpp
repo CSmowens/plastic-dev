@@ -98,10 +98,14 @@ namespace plt
         m_geomRepere->addSubGeometry( Geometry::createRightHandCoordinateSystem() );
 
 
-        m_shaderRepere = std::make_shared<Shader>(loadFile("repere.vert"), loadFile("repere.frag"));
+        std::vector<std::shared_ptr<Shader>> shaders;
+        shaders.push_back( std::make_shared<Shader>(ShaderType::Vertex, loadFile("repere.vert")) );
+        shaders.push_back( std::make_shared<Shader>(ShaderType::Fragment, loadFile("repere.frag")) );
+
+        m_programRepere = std::make_shared<Program>(shaders);
 
 
-        m_hbRepere = std::make_shared<HardwareBuffer>(m_geomRepere, m_shaderRepere);
+        m_hbRepere = std::make_shared<HardwareBuffer>(m_geomRepere, m_programRepere);
     }
 
 
@@ -130,8 +134,8 @@ namespace plt
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-        m_shaderRepere->bind();
-        m_shaderRepere->setParameter("WorldViewProjMatrix", m_camera.getViewProjMatrix());
+        m_programRepere->bind();
+        m_programRepere->setParameter("WorldViewProjMatrix", m_camera.getViewProjMatrix());
 
         m_hbRepere->bind();
         m_hbRepere->draw();

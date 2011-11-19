@@ -38,7 +38,7 @@
 #include <Plastic/OpenGL.hpp>
 
 #include "Geometry.hpp"
-#include "Shader.hpp"
+#include "Program.hpp"
 #include "VertexDeclaration.hpp"
 #include "VertexElement.hpp"
 
@@ -57,11 +57,11 @@ namespace plt
     {
 
     public:
-        HardwareBuffer(const std::shared_ptr<Geometry> &geometry, const std::shared_ptr<Shader> &shader);
+        HardwareBuffer(const std::shared_ptr<Geometry> &geometry, const std::shared_ptr<Program> &shader);
 
         ~HardwareBuffer();
 
-        void setShader(const std::shared_ptr<Shader> &shader);
+        void setProgram(const std::shared_ptr<Program> &shader);
 
         void bind() const;
 
@@ -72,7 +72,7 @@ namespace plt
     private:
         void checkCompatibility() const;
 
-        void initialize(const std::shared_ptr<Geometry> &geometry, const std::shared_ptr<Shader> &shader);
+        void initialize(const std::shared_ptr<Geometry> &geometry, const std::shared_ptr<Program> &shader);
 
         void cleanUp();
 
@@ -80,7 +80,7 @@ namespace plt
 		// Member data
 		////////////////////////////////////////////////////////////
         std::shared_ptr<Geometry> m_geometry;
-        std::shared_ptr<Shader> m_shader;
+        std::shared_ptr<Program> m_shader;
 
         std::vector<GLint> m_locations;
 
@@ -105,6 +105,6 @@ namespace plt
 /// \todo Sortir le #define PLASTIC_DEBUG 1
 /// \todo Prendre en compte si y a tesselation hardware
 /// \todo Etre exceptions safe
-/// \todo Dans setShader(), penser à refaire le VAO
+/// \todo Dans setProgram(), penser à refaire le VAO
 ///
 ////////////////////////////////////////////////////////////

@@ -34,22 +34,22 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <Plastic/OpenGL.hpp>
-#include <Plastic/Core/Matrix3.hpp>
-#include <Plastic/Core/Matrix4.hpp>
-#include <Plastic/Core/Vector2.hpp>
-#include <Plastic/Core/Vector3.hpp>
-#include <Plastic/Core/Vector4.hpp>
-
-#include "Texture.hpp"
-
-#include "VertexDeclaration.hpp"
 
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace plt
 {
+    /////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    enum class ShaderType
+    {
+        Vertex,
+        Fragment
+    };
+
+
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
@@ -57,78 +57,29 @@ namespace plt
     {
 
     public:
-        Shader(const std::string &vertexShaderSource, const std::string &fragmentShaderSource);
+        Shader(ShaderType type, const std::string &shaderSource);
 
 		~Shader();
 
-        const VertexDeclaration& getVertexDeclaration() const;
+        ShaderType getShaderType() const;
 
-        std::vector<GLint> getAttribsLocations(const VertexDeclaration &declaration) const;
+        GLuint getOpenGLHandle() const;
 
-        void bind() const;
-
-        GLint getUniformLocation(const std::string &name) const;
-
-        template<typename T>
-        void setParameter(const std::string &name, const T &param) const;
-
-        void setParameter(GLint location, const mat4 &matrix) const;
-        void setParameter(GLint location, const mat3 &matrix) const;
-        void setParameter(GLint location, GLfloat data) const;
-        void setParameter(GLint location, const vec2 &vector) const;
-        void setParameter(GLint location, const vec3 &vector) const;
-        void setParameter(GLint location, const vec4 &vector) const;
-        void setParameter(GLint location, GLuint data) const;
-        void setParameter(GLint location, GLint data) const;
-
-        void setParameter(const std::string &name, const std::shared_ptr<Texture> &tex, unsigned int textureUnit) const;
-        void setParameter(GLint location, const std::shared_ptr<Texture> &tex, unsigned int textureUnit) const;
-
-    //private:
-		struct UniformInfo
-		{
-			GLint location;
-			GLenum type;
-			std::string name;
-		};
-
-		struct AttributeInfo
-		{
-			GLint location;
-			GLenum type;
-			std::string name;
-		};
-
+    private:
 		GLuint createShader(GLenum type, const std::string &source);
 
-		void checkProgram();
-
-        void checkUniformFromLocation(GLint location, GLenum type) const;
-
-		void getUniformsInfos();
-		void getAttributesInfos();
-
-		void extractDeclaration();
-
-        void initialize(const std::string &vertexShaderSource, const std::string &fragmentShaderSource);
+        void initialize(ShaderType type, const std::string &shaderSource);
 
         void cleanUp();
         
 		////////////////////////////////////////////////////////////
 		// Member data
 		////////////////////////////////////////////////////////////
-		GLuint m_program;
-		
-		VertexDeclaration m_declaration;
-
-		std::vector<UniformInfo> m_uniforms;
-		std::vector<AttributeInfo> m_attributes;
+        ShaderType m_type;
+		GLuint m_shader;
     };
 
 } // namespace plt
-
-
-#include "Shader.inl"
 
 
 #endif // PLASTIC_SHADER_HPP
@@ -139,16 +90,8 @@ namespace plt
 ////////////////////////////////////////////////////////////
 /// \class plt::Shader
 ///
-/// \todo Passer les attributs en private
 /// \todo Sortir la macro #define PLASTIC_DEBUG 1
 /// \todo Etre exception safe
 /// \todo Renvoyer l'erreur OpenGL aussi
-/// \todo Gérer les autres types de shader et savoir si tesselation hardware est activée
-/// \todo Faire une assertion pour verifier lors d'un setParameter que le type est le bon 
-/// \todo Avoir un constructeur par défaut avec les delegating constructor
-/// \todo En cas d'exception gérer aussi les shader OpenGL à détruire et pas que le program
-/// \todo Gérer les sorties des shader, notament pour faire du MRT
-///
-/// \todo Verifier que textureUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
 ///
 ////////////////////////////////////////////////////////////

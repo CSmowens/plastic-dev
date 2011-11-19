@@ -51,7 +51,7 @@ namespace plt
     HardwareBuffer::HardwareBuffer
     (
         const std::shared_ptr<Geometry> &geometry, 
-        const std::shared_ptr<Shader> &shader
+        const std::shared_ptr<Program> &shader
     )
     {
         try
@@ -79,7 +79,7 @@ namespace plt
     void HardwareBuffer::initialize
     (
         const std::shared_ptr<Geometry> &geometry, 
-        const std::shared_ptr<Shader> &shader
+        const std::shared_ptr<Program> &shader
     )
     {
         if(!geometry->hasSubGeometry())
@@ -89,7 +89,7 @@ namespace plt
 
         m_declaration = (*geometry)[0]->getVertexDeclaration();
 
-        setShader(shader);
+        setProgram(shader);
 
 
         unsigned int offsetVertex(0);
@@ -195,9 +195,9 @@ namespace plt
     }
 
 
-    void HardwareBuffer::setShader
+    void HardwareBuffer::setProgram
     (
-        const std::shared_ptr<Shader> &shader
+        const std::shared_ptr<Program> &shader
     ) 
     {
         m_shader = shader;
