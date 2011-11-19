@@ -1,26 +1,97 @@
-    Todo list
+        TODO List
+
+Plastic:
+    - Passer à g++-4.6
+    - Utiliser nullptr
+    - Passer a CMake
+    - S'occuper de la documentation
+    
+    - Utiliser delegating constructor une fois disponible
+
+    - Ajouter une démo de post-processing
 
 
-- Passer le projet sous CMake
+Gui:
+    - Ajouter Atom close a la fenetre
+    - Reimplémenter
+    - Choisir le nombre de bits pour red, green, blue and alpha dans l'initialisation
+    - Implementer Context::makeCurrent()
+    - Implémenter pour Win32
+    - Ajouter le joystick
+    
 
-- Tout documenter
-- Resoudre toutes les erreurs de la documentation dans Plastic
-- Passer sous g++-4.6
-- Utiliser nullptr
-- Utiliser les fonctions glTexStorage* dans UploaderTexture::allocateMemory()
+Graphics:
+    - Ajouter une classe qui charge les extensions
+    - Implémenter SceneManager de façon basique
+    
+
+HardwareBuffer:
+    - Renommer la classe
+    - Déresponsabilisé de la classe Shader(Program)
+
+
+Geometry:
+    - Passer dans le core
+    - Ajouter Axis Aligned Box
+    - Optimiser la classe pour eviter les copies inutiles
+    - Chargement depuis une geometry skinnée
+
+
+MediaManager:
+    - Ajouter Geometry
+    - Ajouter spécialisation de Loader<T> pour Image pour force le PixelFormat
+    - Implémenter LoaderImageTGA pour RLE
+    - Optimiser le chargement des OBJ
+    - Ajouter le chargement des images DDS
+    
+
+Shader:
+    - Renommer Shader en Program
+    - Program devra se construire à partir de Shader
+    - Ajouter Geometry Shader
+    - Ajouter la tesselation
+    - Recupérer les out du fragement shader
+    - Gestion Uniforn Buffer Object
+
+
+RenderTarget:
+    - Ajouter les fonctions pour clear
+
+RenderTexure:
+    - Implémenter une première version
+
+
+PixelFormat:
+    - Ajouter les formats Depht et Stencil et DDS et donc mettre a jour GLEnum
+
+
+GLEnum:
+    - Utiliser les nouveaux types de OpenGL 4.2
+    - Assertion pour empecher les erreurs dans GLEnum
+
+
+Texture:
+    - Ajouter le support pour 1DArray, 2DArray et CubeMapArray
+    - Utiliser glTexStorage
+
+
+Sampler:
+    - Ajouter des options
+
+
+XML:
+    - Reimplémenter pour être memory-safe
 
 
 
 
 
 
-
-
-
-    Penser à faire:
 
 - Système de texture:
     - Faire en sorte de charger les textures le moins de fois possible en utilisant des GL_TEXTURE0 + i, 
      en faisant varier i selon les possibilités de l'implementation OpenGL.
     - Lors du bind des textures, verifier que le sampler concorde au niveau des mipmaps et des filtres utilisés!!!
     - Pareil si on utilise un SamplerCompareMode voir si c'est une depth texture
+
+
