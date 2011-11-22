@@ -3,6 +3,7 @@
 Plastic:
     - Passer à g++-4.6
     - Utiliser nullptr
+    - Ajouter la passe Link Time Optimisation (LTO)
     - Passer a CMake
     - S'occuper de la documentation
     - Remplir le README
@@ -32,6 +33,7 @@ Graphics:
 HardwareBuffer:
     - Renommer la classe
     - Déresponsabilisé de la classe Program
+    - Separer VBO et VBO/IBO
 
 
 Geometry:
