@@ -41,6 +41,10 @@ Geometry:
     - Chargement depuis une geometry skinnée
 
 
+Skeleton:
+    - Implementer interpolate()
+
+
 MediaManager:
     - Ajouter Geometry
     - Ajouter spécialisation de Loader<T> pour Image pour force le PixelFormat
