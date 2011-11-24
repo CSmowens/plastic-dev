@@ -118,6 +118,8 @@ namespace plt
 
         static std::shared_ptr<Geometry> createRightHandCoordinateSystem();
 
+        static std::shared_ptr<Geometry> createFrustum(float fovy, float ratio, float zNear, float zFar);
+
         static std::shared_ptr<Geometry> createSphere(float radius, unsigned int segmentsCount, unsigned int ringsCount, bool normals, bool texCoords);
 
 

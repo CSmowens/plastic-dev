@@ -67,6 +67,73 @@ namespace plt
     }
 
 
+    std::shared_ptr<Geometry> Geometry::createFrustum
+    (
+        float fovy, 
+        float ratio, 
+        float near, 
+        float far
+    )
+    {
+	    float thetaY = radians(fovy * 0.5f);
+	    float tanThetaY = tan(thetaY);
+	    float tanThetaX = tanThetaY * ratio;
+
+
+	    float half_w = tanThetaX * near;
+	    float half_h = tanThetaY * near;
+
+	    float vpLeft   = - half_w;
+	    float vpRight  = + half_w;
+	    float vpBottom = - half_h;
+	    float vpTop    = + half_h;
+
+
+        float radio = far / near;
+        float farLeft = vpLeft * radio;
+        float farRight = vpRight * radio;
+        float farBottom = vpBottom * radio;
+        float farTop = vpTop * radio;
+
+
+
+
+
+        VertexDeclaration declaration;
+        declaration.add(VertexElementSemantic::Position, VertexElementType::Float3);
+
+        std::vector<vec3> vertex;
+        vertex.push_back( vec3(vpLeft, vpTop, -near) );       // Near top left
+        vertex.push_back( vec3(vpRight, vpTop, -near) );      // Near top right
+        vertex.push_back( vec3(vpLeft, vpBottom, -near) );    // Near bottom left
+        vertex.push_back( vec3(vpRight, vpBottom, -near) );   // Near bottom right
+
+        vertex.push_back( vec3(farLeft, farTop, -far) );      // Far top left
+        vertex.push_back( vec3(farRight, farTop, -far) );     // Far top right
+        vertex.push_back( vec3(farLeft, farBottom, -far) );   // Far bottom left
+        vertex.push_back( vec3(farRight, farBottom, -far) );  // Far bottom right
+
+/*
+        std::vector<unsigned char> index = {0, 1, 2, 1, 2, 3,   // Near plane
+                                            4, 5, 6, 5, 6, 7,   // Far plane
+                                            6, 2, 3, 6, 3, 7,   // Bottom plane
+                                            4, 0, 5, 5, 0, 1,   // Top plane
+                                            4, 0, 6, 6, 0, 2,   // Left plane
+                                            5, 7, 1, 5, 1, 3};  // Right plane
+
+
+        return std::make_shared<Geometry>(PrimitiveType::Triangles, declaration, vertex, index);
+*/
+
+
+        std::vector<unsigned char> index = {0,1,1,3,3,2,2,0,
+                                            4,5,5,7,7,6,6,4,
+                                            1,5,4,0,2,6,7,3 };
+
+        return std::make_shared<Geometry>(PrimitiveType::Lines, declaration, vertex, index);
+    }
+
+
     std::shared_ptr<Geometry> Geometry::createSphere
     (
         float radius, 
