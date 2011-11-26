@@ -1,12 +1,12 @@
         TODO List
 
 Plastic:
-    - Passer à g++-4.6
     - Utiliser nullptr
-    - Ajouter la passe Link Time Optimisation (LTO)
     - Passer a CMake
     - S'occuper de la documentation
     - Remplir le README
+
+    - Ajouter la gestion pour Win32
     
     - Utiliser delegating constructor une fois disponible
 
