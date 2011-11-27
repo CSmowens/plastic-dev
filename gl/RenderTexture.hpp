@@ -80,7 +80,9 @@ namespace plt
         ////////////////////////////////////////////////////////////
         virtual unsigned int getHeight() const;
 
-        virtual void bind();
+        virtual void bind() const;
+
+        virtual void clear() const;
 
         GLuint getGLHandle();
 

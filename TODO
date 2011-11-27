@@ -5,6 +5,9 @@ Plastic:
     - Passer a CMake
     - S'occuper de la documentation
     - Remplir le README
+    - Passer à l'option -std=c++11
+
+    - Revoir le Makefile, et supprimer les anciennes versions avant d'installer
 
     - Ajouter la gestion pour Win32
     
@@ -14,6 +17,7 @@ Plastic:
 Demo:
     - Ajouter une démo contenant plusieurs techniques
     - Ajouter une démo de post-processing
+    - Résoudre le bug du redimensionnement
 
 
 Gui:

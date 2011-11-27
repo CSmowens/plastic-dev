@@ -87,10 +87,19 @@ namespace plt
 
     void RenderImage::bind
     (
-    )
+    ) const
     {
         GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, m_fbo) );
     }
+
+
+    void RenderImage::clear
+    (
+    ) const
+    {
+
+    }
+
 
 
     GLuint RenderImage::getGLHandle
