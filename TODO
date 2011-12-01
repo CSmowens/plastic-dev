@@ -46,6 +46,8 @@ Geometry:
     - Optimiser la classe pour eviter les copies inutiles
     - Chargement depuis une geometry skinnée
 
+    - Ajouter la création d'une box et d'une geometry pour le post processing
+
 
 Skeleton:
     - Implementer interpolate()
@@ -71,7 +73,7 @@ Program:
 
 
 RenderTarget:
-    - Ajouter les fonctions pour clear
+    - Voir si clear doit se retrouver implémenter en direct et non en virtual
 
 
 RenderTexure:

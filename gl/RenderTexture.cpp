@@ -36,17 +36,19 @@
 #define PLASTIC_DEBUG 1
 #include "GLCheck.hpp"
 
+#include "GLEnum.hpp"
+
 #include <stdexcept>
 
 namespace plt
 {
-    RenderImage::RenderImage
+    RenderTexture::RenderTexture
     (
-
+        const uvec2 &dimensions
     ) :
-    RenderTarget()
+    RenderTarget(),
+    m_dimensions(dimensions)
     {
-        // Mettre à jour le viewport
         try
         {
             initialize();
@@ -56,12 +58,12 @@ namespace plt
         {
             cleanUp();
 
-            throw; //std::runtime_error("Error during RenderImage initialisation");
+            throw; //std::runtime_error("Error during RenderTexture initialisation");
         }  
     }
 
 
-    RenderImage::~RenderImage
+    RenderTexture::~RenderTexture
     (
     )
     {
@@ -69,23 +71,23 @@ namespace plt
     }
 
 
-    unsigned int RenderImage::getWidth
+    unsigned int RenderTexture::getWidth
     (
     ) const
     {
-        return 0;
+        return m_dimensions.x;
     }
 
 
-    unsigned int RenderImage::getHeight
+    unsigned int RenderTexture::getHeight
     (
     ) const
     {
-        return 0;
+        return m_dimensions.y;
     }
 
 
-    void RenderImage::bind
+    void RenderTexture::bind
     (
     ) const
     {
@@ -93,16 +95,24 @@ namespace plt
     }
 
 
-    void RenderImage::clear
+    void RenderTexture::unbind
     (
     ) const
     {
+        GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
+    }
 
+
+    void RenderTexture::clear
+    (
+    ) const
+    {
+        GLCheck( glClear(m_clearMask) );
     }
 
 
 
-    GLuint RenderImage::getGLHandle
+    GLuint RenderTexture::getGLHandle
     (
     )
     {
@@ -110,18 +120,32 @@ namespace plt
     }
 
 
-    void RenderImage::initialize
+    void RenderTexture::initialize
     (
     )
     {
-        GLCheck( glGenFramebuffers(1, &m_fbo) );
-        GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, m_fbo) );
+        m_viewport.width = m_dimensions.x;
+        m_viewport.height = m_dimensions.y;
 
-        checkFramebufferObject();
+        m_clearMask = 0;
+
+
+        m_maxColorAttachments = 0;
+        GLCheck( glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &m_maxColorAttachments) );
+        
+
+        m_depthAttachment = std::make_pair(AttachedImageType::Texture, false);
+
+
+        GLCheck( glGenFramebuffers(1, &m_fbo) );
+        bind();
+        unbind();
+
+        //checkValidity();
     }
 
 
-    void RenderImage::cleanUp
+    void RenderTexture::cleanUp
     (
     )
     {
@@ -130,7 +154,7 @@ namespace plt
     }
 
 
-    void RenderImage::checkFramebufferObject
+    void RenderTexture::checkValidity
     (
     )
     {
@@ -191,7 +215,7 @@ namespace plt
                 case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
                 {
                     error = "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE";
-                    description = "the value of GL_RENDERBUFFER_SAMPLES is not the same for all attached renderbuffers; if the value of GL_TEXTURE_SAMPLES is the not same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_RENDERBUFFER_SAMPLES does not match the value of GL_TEXTURE_SAMPLES OR the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not the same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not GL_TRUE for all attached textures";
+                    description = "the value of GL_RENDERBUFFER_SAMPLES is not the same for all attached renderbuffers; if the value of GL_TURE_SAMPLES is the not same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_RENDERBUFFER_SAMPLES does not match the value of GL_TURE_SAMPLES OR the value of GL_TURE_FIXED_SAMPLE_LOCATIONS is not the same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_TURE_FIXED_SAMPLE_LOCATIONS is not GL_TRUE for all attached textures";
                     break;
                 }
 
@@ -208,6 +232,153 @@ namespace plt
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void RenderTexture::attachDepthBuffer
+    (
+        const std::shared_ptr<Texture> &texture
+    )
+    {
+        attachTexture(texture, GL_DEPTH_ATTACHMENT);
+
+        m_clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+
+
+    void RenderTexture::attachDepthBuffer
+    (
+        const std::shared_ptr<RenderBuffer> &renderbuffer    
+    )
+    {
+        attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
+
+        m_clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+    
+
+    void RenderTexture::detachDepthBuffer
+    (
+    )
+    {
+        detach(GL_DEPTH_ATTACHMENT);
+
+        m_clearMask ^= GL_DEPTH_BUFFER_BIT;
+    }
+
+
+    void RenderTexture::attachColorBuffer
+    (
+        const std::shared_ptr<Texture> &texture, 
+        unsigned int attachment
+    )
+    {
+        attachTexture(texture, GL_COLOR_ATTACHMENT0 + attachment);
+
+        m_clearMask |= GL_COLOR_BUFFER_BIT;
+    }
+
+
+    void RenderTexture::attachColorBuffer
+    (
+        const std::shared_ptr<RenderBuffer> &renderbuffer, 
+        unsigned int attachment
+    )
+    {
+        attachRenderBuffer(renderbuffer, GL_COLOR_ATTACHMENT0 + attachment);
+
+        m_clearMask |= GL_COLOR_BUFFER_BIT;
+    }
+
+    
+    void RenderTexture::detachColorBuffer
+    (
+        unsigned int attachment
+    )
+    {
+        detach(GL_COLOR_ATTACHMENT0 + attachment);
+
+        m_clearMask ^= GL_COLOR_BUFFER_BIT;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Verifier l'attachment et qu'il est dispo
+    // Mettre à jour les infos sur le depth et color
+    // Verifier les dimensions
+    // Changer le maskClear (le xor ^ ne fonctionnera que si le attach avait bien fait le |= avant donc qu'il y a bien quelque chose)
+
+    // Changer les drawBuffers à actualiser lors du bind
+
+
+    void RenderTexture::attachTexture
+    (
+        const std::shared_ptr<Texture> &texture, 
+        GLenum attachment
+    )
+    {
+        // Assert qu'on a une texture de type Rectangle ou 2D...
+
+        GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, texture->getOpenGLTarget(), texture->getOpenGLHandle(), 0) );
+    }
+
+
+    void RenderTexture::attachRenderBuffer
+    (
+        const std::shared_ptr<RenderBuffer> &renderbuffer, 
+        GLenum attachment
+    )
+    {
+        GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, renderbuffer->getOpenGLHandle()) );
+    }
+
+    
+    void RenderTexture::detach
+    (
+        GLenum attachment
+    )   
+    {
+        // Mettre a 0 le bon soit la texture soit le renderbuffer...
+
+        // Mettre à jour les infos sur le depth et color
+    }
+
 
 } // namespace plt
 

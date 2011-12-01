@@ -45,7 +45,7 @@ namespace plt
         const uvec2 &dimensions
     )
     {
-        if( !isPlasticOfTwo(dimensions.x) || !isPlasticOfTwo(dimensions.y) )
+        if( !isPowerOfTwo(dimensions.x) || !isPowerOfTwo(dimensions.y) )
             throw std::runtime_error("Image haven't got dimensions in plastic of two, try TextureRect instead");
     }
 

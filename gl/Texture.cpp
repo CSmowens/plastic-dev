@@ -95,7 +95,7 @@ namespace plt
     }
 
 
-    unsigned int Texture::nearestPlasticOfTwo
+    unsigned int Texture::nearestPowerOfTwo
     (
         unsigned int value
     )
@@ -217,6 +217,14 @@ namespace plt
     ) const
     {
         return m_glslType;
+    }
+
+
+    GLuint Texture::getOpenGLTarget
+    (
+    ) const
+    {
+        return m_target;
     }
 
 

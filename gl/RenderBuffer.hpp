@@ -28,63 +28,31 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_TEXTURE_HPP
-#define PLASTIC_TEXTURE_HPP
+#ifndef PLASTIC_RENDERBUFFER_HPP
+#define PLASTIC_RENDERBUFFER_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/Core/Image.hpp>
 #include <Plastic/Core/PixelFormat.hpp>
+#include <Plastic/Core/Vector2.hpp>
 
 #include <Plastic/OpenGL.hpp>
-
-#include <memory>
-#include <vector>
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    enum struct TextureType
-    {
-        OneDimension,
-        TwoDimensions,
-        Rectangle,
-        Cubemap,
-
-        OneDimensionArray,
-        TwoDimensionsArray,
-        CubemapArray
-    };
-
-
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    enum class TextureMipmapFlag
-    {
-        NoMipMap,
-        FromImage,
-        GenHardware
-    };
-
-
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    class Texture
+    class RenderBuffer
     {
 
     public:
-        Texture();
+        RenderBuffer();
 
-        Texture(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        RenderBuffer(PixelFormat format, const uvec2 &dimensions);
 
-        Texture(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-
-        ~Texture();
+        ~RenderBuffer();
 
         void bind() const;
 
@@ -92,55 +60,36 @@ namespace plt
 
         GLenum getGLSLType() const;
 
-        GLuint getOpenGLTarget() const;
-
         GLuint getOpenGLHandle() const;
 
         PixelFormat getPixelFormat() const;
 
-        TextureType getTextureType() const;
-
-        bool hasMipmaps() const;
-
-
-
-
-        static unsigned int getMipMapLevelsCount(unsigned int width, unsigned int height);
-
-        static unsigned int nearestPowerOfTwo(unsigned int value);
 
     private:
-        void initialize(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-
-        void initialize(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        void initialize(PixelFormat format, const uvec2 &dimensions);
 
         void cleanUp();
 
 		////////////////////////////////////////////////////////////
 		// Member data
 		//////////////////////////////////////////////////////////// 
-        PixelFormat m_format;
-        TextureType m_textureType;
-
-        TextureMipmapFlag m_textureMipMapFlag;
-
-        bool m_hasMipMap;
+        GLuint m_renderbuffer;
         
-        GLuint m_texture;   
-        GLenum m_target;
-        GLenum m_glslType;
+        PixelFormat m_format;
+
+        uvec2 m_dimensions;
     };
 
 } // namespace plt
 
 
-#endif // PLASTIC_TEXTURE_HPP
+#endif // PLASTIC_RENDERBUFFER_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::Texture
+/// \class plt::RenderBuffer
 ///
 /// \todo Etre exception safe
 /// \todo Sortir le #define PLASTIC_DEBUG 1

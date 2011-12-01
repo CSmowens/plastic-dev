@@ -28,8 +28,8 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_RENDERIMAGE_HPP
-#define PLASTIC_RENDERIMAGE_HPP
+#ifndef PLASTIC_RENDERTEXTURE_HPP
+#define PLASTIC_RENDERTEXTURE_HPP
 
 
 ////////////////////////////////////////////////////////////
@@ -40,15 +40,20 @@
 #include <Plastic/OpenGL.hpp>
 
 #include <Plastic/Core/Vector2.hpp>
+#include <Plastic/Core/PixelFormat.hpp>
+
+#include "RenderBuffer.hpp"
+#include "Texture.hpp"
+
+#include <vector>
 
 namespace plt
 {
-
     ////////////////////////////////////////////////////////////
     /// 
     ///
     ////////////////////////////////////////////////////////////
-    class RenderImage : public RenderTarget
+    class RenderTexture : public RenderTarget
     {
 
     public:
@@ -56,9 +61,9 @@ namespace plt
 		/// \brief Default constructor
         ///
 		////////////////////////////////////////////////////////////
-        RenderImage();
+        RenderTexture(const uvec2 &dimensions);
 
-        virtual ~RenderImage();
+        virtual ~RenderTexture();
 
         ////////////////////////////////////////////////////////////
         /// \brief Return the width of the render target
@@ -82,35 +87,75 @@ namespace plt
 
         virtual void bind() const;
 
+        virtual void unbind() const;
+
         virtual void clear() const;
 
         GLuint getGLHandle();
+
+        void attachDepthBuffer(const std::shared_ptr<Texture> &texture);
+
+        void attachDepthBuffer(const std::shared_ptr<RenderBuffer> &renderbuffer);
+        
+        void detachDepthBuffer();
+
+        void attachColorBuffer(const std::shared_ptr<Texture> &texture, unsigned int attachment);
+
+        void attachColorBuffer(const std::shared_ptr<RenderBuffer> &renderbuffer, unsigned int attachment);
+        
+        void detachColorBuffer(unsigned int attachment);
+
+        void checkValidity();
 
     private:
         void initialize();
 
         void cleanUp();
+
+        void attachTexture(const std::shared_ptr<Texture> &texture, GLenum attachment);
+
+        void attachRenderBuffer(const std::shared_ptr<RenderBuffer> &renderbuffer, GLenum attachment);
         
-        void checkFramebufferObject();
+        void detach(GLenum attachment);
+
+
+        /////////////////////////////////////////////////////////////////
+        ///
+        /////////////////////////////////////////////////////////////////
+        enum class AttachedImageType
+        {
+            Texture,
+            Fragment
+        };
+
 
 		////////////////////////////////////////////////////////////
 		// Member data
 		////////////////////////////////////////////////////////////
         GLuint m_fbo;
-        GLuint m_rboDepth;
+
+        GLbitfield m_clearMask;
+
+        uvec2 m_dimensions;
+
+        GLint m_maxColorAttachments;
+        std::vector< std::pair<AttachedImageType, bool> > m_colorAttachments;
+
+        std::pair<AttachedImageType, bool> m_depthAttachment;
+        //std::pair<AttachedImageType, bool> m_depthAttachment;
     };
 
 
 } // namespace plt
 
 
-#endif // PLASTIC_RENDERIMAGE_HPP
+#endif // PLASTIC_RENDERTEXTURE_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::RenderImage
+/// \class plt::RenderTexture
 ///
 /// \todo Etre exception safe
 /// \todo Renvoyer aussi l'erreur OpenGL

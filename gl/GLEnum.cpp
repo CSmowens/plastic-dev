@@ -49,7 +49,10 @@ namespace plt
         GL_RED,
         GL_RG,
         GL_RGB,
-        GL_RGBA
+        GL_RGBA,
+        GL_DEPTH_COMPONENT16,
+        GL_DEPTH_COMPONENT24,
+        GL_DEPTH_COMPONENT32
     };
 
 
@@ -58,7 +61,10 @@ namespace plt
         GL_RED,
         GL_RG,
         GL_RGB,
-        GL_RGBA
+        GL_RGBA,
+        GL_DEPTH_COMPONENT,
+        GL_DEPTH_COMPONENT,
+        GL_DEPTH_COMPONENT
     };
 
 
@@ -67,12 +73,18 @@ namespace plt
         GL_UNSIGNED_BYTE,
         GL_UNSIGNED_BYTE,
         GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE
+        GL_UNSIGNED_BYTE,
+        GL_UNSIGNED_BYTE,
+        GL_UNSIGNED_BYTE,
+        GL_UNSIGNED_BYTE,
     };
 
 
     const std::vector<GLenum> GLEnum::m_glslTypeTexture1D =
     {
+        GL_SAMPLER_1D,
+        GL_SAMPLER_1D,
+        GL_SAMPLER_1D,
         GL_SAMPLER_1D,
         GL_SAMPLER_1D,
         GL_SAMPLER_1D,
@@ -82,6 +94,9 @@ namespace plt
 
     const std::vector<GLenum> GLEnum::m_glslTypeTexture2D =
     {
+        GL_SAMPLER_2D,
+        GL_SAMPLER_2D,
+        GL_SAMPLER_2D,
         GL_SAMPLER_2D,
         GL_SAMPLER_2D,
         GL_SAMPLER_2D,
@@ -95,11 +110,17 @@ namespace plt
         GL_SAMPLER_2D_ARRAY,
         GL_SAMPLER_2D_ARRAY,
         GL_SAMPLER_2D_ARRAY,
+        GL_SAMPLER_2D_ARRAY,
+        GL_SAMPLER_2D_ARRAY,
+        GL_SAMPLER_2D_ARRAY,
     };
 
 
     const std::vector<GLenum> GLEnum::m_glslTypeTextureRect =
     {
+        GL_SAMPLER_2D_RECT,
+        GL_SAMPLER_2D_RECT,
+        GL_SAMPLER_2D_RECT,
         GL_SAMPLER_2D_RECT,
         GL_SAMPLER_2D_RECT,
         GL_SAMPLER_2D_RECT,
@@ -109,6 +130,9 @@ namespace plt
 
     const std::vector<GLenum> GLEnum::m_glslTypeTextureCubeMap = 
     {
+        GL_SAMPLER_CUBE,
+        GL_SAMPLER_CUBE,
+        GL_SAMPLER_CUBE,
         GL_SAMPLER_CUBE,
         GL_SAMPLER_CUBE,
         GL_SAMPLER_CUBE,
