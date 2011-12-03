@@ -35,9 +35,9 @@ namespace plt
     (
     )
     {
-        std::vector<KeyFrame> keys;
-        keys.push_back( KeyFrame { vec3(-5, 0, 0), vec3(-6, 0, 5) } );
-        keys.push_back( KeyFrame { vec3(5, 0, 0), vec3(6, 0, -5) } );
+        std::vector<KeyPoint> keys;
+        keys.push_back( KeyPoint { vec3(-5, 0, 0), vec3(-6, 0, 5) } );
+        keys.push_back( KeyPoint { vec3(5, 0, 0), vec3(6, 0, -5) } );
         
         addControlsPoints(keys);
     }
@@ -46,7 +46,7 @@ namespace plt
     template<typename T>
     BezierCurve<T>::BezierCurve
     (
-        const std::vector<KeyFrame> &keys
+        const std::vector<KeyPoint> &keys
     )
     {
         addControlsPoints(keys);
@@ -65,11 +65,11 @@ namespace plt
     template<typename T>
     void BezierCurve<T>::addControlsPoints
     (
-        const std::vector<KeyFrame> &keys
+        const std::vector<KeyPoint> &keys
     )
     {
         for(auto it=keys.begin(); it!=keys.end(); ++it)
-            m_keyFrames.push_back(*it);
+            m_keyPoints.push_back(*it);
     }
 
 
@@ -81,11 +81,11 @@ namespace plt
     {
         PLASTIC_ASSERT(time >= T(0) && time <= T(1) );
 
-        PLASTIC_ASSERT( m_keyFrames.size() > 1 );
+        PLASTIC_ASSERT( m_keyPoints.size() > 1 );
 
 
 
-        T timePerCurve = T(1) / static_cast<T>(m_keyFrames.size()-1);
+        T timePerCurve = T(1) / static_cast<T>(m_keyPoints.size()-1);
 
         std::size_t i = static_cast<std::size_t>( time / timePerCurve);
 
@@ -102,12 +102,23 @@ namespace plt
         T u = T(1) - interpolationFactor;
 
         // To ensure continuity
-        tvec3<T> newTangent = T(2)*m_keyFrames[i].position - m_keyFrames[i].tangent;
+        tvec3<T> newTangent = T(2)*m_keyPoints[i].position - m_keyPoints[i].tangent;
 
-        return m_keyFrames[i].position * u * u * u +
+
+        return m_keyPoints[i].position * u * u * u +
                newTangent * 3 * t * u * u +
-               m_keyFrames[i+1].tangent * 3 * t * t * u  +
-               m_keyFrames[i+1].position * t * t * t;
+               m_keyPoints[i+1].tangent * 3 * t * t * u  +
+               m_keyPoints[i+1].position * t * t * t;
+
+/*
+        // Curve of Hermite
+        return m_keyPoints[i].position * (2*t*t*t -3*t*t + 1) +
+               newTangent * (t*t*t -2*t*t + t) +
+               m_keyPoints[i+1].position * (-2*t*t*t + 3*t*t) +
+               m_keyPoints[i+1].tangent *  (t*t*t - t*t);
+
+*/
+
     }
 
 } // namespace plt

@@ -35,8 +35,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#define PLASTIC_DEBUG 1
-
 #include <Plastic/Core/Vector3.hpp>
 
 #include "Spline.hpp"
@@ -50,7 +48,7 @@ namespace plt
     class BezierCurve : public Spline<T>
     {
     public:
-        class KeyFrame
+        class KeyPoint
         {
         public:
             tvec3<T> position;
@@ -60,16 +58,16 @@ namespace plt
     public:
         BezierCurve();
 
-        BezierCurve(const std::vector<KeyFrame> &keys);
+        BezierCurve(const std::vector<KeyPoint> &keys);
 
         virtual ~BezierCurve();
 
-        void addControlsPoints(const std::vector<KeyFrame> &keys);
+        void addControlsPoints(const std::vector<KeyPoint> &keys);
 
         virtual tvec3<T> getInterpoledPosition(const T &time) const;
 
     private:
-        std::vector<KeyFrame> m_keyFrames;
+        std::vector<KeyPoint> m_keyPoints;
     };
 
 
@@ -88,8 +86,6 @@ namespace plt
 ////////////////////////////////////////////////////////////
 /// \class plt::BezierCurve
 ///
-/// \todo Retirer PLASTIC_DEBUG
-/// \todo Ajouter une constructeur pour KeyFrame, le renommer ? et répercuter tout ça / ou remplacer la classe KeyFrame par un std::pair
 ///
 ////////////////////////////////////////////////////////////
 
