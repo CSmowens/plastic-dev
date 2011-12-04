@@ -33,6 +33,7 @@
 #include "LoaderImageTGA.hpp"
 
 #include <Plastic/Core/Assert.hpp>
+#include <Plastic/Core/PixelFormatInfos.hpp>
 #include <Plastic/Core/Types.hpp>
 
 #include <fstream>
@@ -297,7 +298,7 @@ namespace plt
         }
 
 
-        std::vector<ubyte> pixels(dimensions.x * dimensions.y * getBytesPerPixel(format), 0xD3);
+        std::vector<ubyte> pixels(dimensions.x * dimensions.y * getPixelFormatInfos(format).size(), 0xD3);
         std::vector<ubyte> colormap;
 
         buffer.seekg(static_cast<int>(header.id_lenght), std::ios::cur);

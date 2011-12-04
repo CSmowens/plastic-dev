@@ -33,6 +33,8 @@
 ////////////////////////////////////////////////////////////
 #include "UploaderTextureCubeMap.hpp"
 
+#include <Plastic/Core/PixelFormatInfos.hpp>
+
 #include "GLCheck.hpp"
 #include "GLEnum.hpp"
 
@@ -93,11 +95,11 @@ namespace plt
             {
                 uvec2 dim = (*images[j])[i].getDimensions();
     
-                if( !isCompressedFormat(format) )
+                if( !getPixelFormatInfos(format).isCompressed() )
                     GLCheck( glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, 0, 0, dim.x, dim.y, GLEnum::getExternalFormat(format), GLEnum::getType(format), (*images[j])[i].getPixels() ));
 
                 else
-                    GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * getBytesPerPixel(format), (*images[j])[i].getPixels()));
+                    GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * getPixelFormatInfos(format).size(), (*images[j])[i].getPixels()));
             }
 
         }

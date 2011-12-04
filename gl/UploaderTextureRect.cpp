@@ -33,6 +33,8 @@
 ////////////////////////////////////////////////////////////
 #include "UploaderTextureRect.hpp"
 
+#include <Plastic/Core/PixelFormatInfos.hpp>
+
 #include "GLCheck.hpp"
 #include "GLEnum.hpp"
 
@@ -85,11 +87,11 @@ namespace plt
 
         uvec2 dim = (*image)[0].getDimensions();
 
-        if( !isCompressedFormat(format) )
+        if( !getPixelFormatInfos(format).isCompressed() )
             GLCheck( glTexSubImage2D(GL_TEXTURE_RECTANGLE, 0, 0, 0, dim.x, dim.y, GLEnum::getExternalFormat(format), GLEnum::getType(format), (*image)[0].getPixels() ));
 
         else
-            GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_RECTANGLE, 0, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * getBytesPerPixel(format), (*image)[0].getPixels()));
+            GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_RECTANGLE, 0, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * getPixelFormatInfos(format).size(), (*image)[0].getPixels()));
     }
 
 
