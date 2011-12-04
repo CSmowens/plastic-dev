@@ -71,17 +71,20 @@ Program:
     - Recupérer les out du fragement shader
     - Gestion Uniforn Buffer Object
 
+    - Lorsqu'on récupère les uniform la doc dis qu'on peut nous renvoyer les built-in "gl_", faire le tris
+
 
 RenderTarget:
     - Voir si clear doit se retrouver implémenter en direct et non en virtual
 
 
 RenderTexure:
-    - Implémenter une première version
+    - Implémenter les vérifications
 
 
 PixelFormat:
     - Ajouter les formats Depht et Stencil et DDS et donc mettre a jour GLEnum
+    - Ajouter des formats flottants
 
 
 GLEnum:
