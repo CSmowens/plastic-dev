@@ -28,62 +28,60 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
+#ifndef PLASTIC_SUBGEOMETRY_HPP
+#define PLASTIC_SUBGEOMETRY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
+#include "IndexBuffer.hpp"
+#include "PrimitiveType.hpp"
+#include "VertexBuffer.hpp"
 
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
-#include <vector>
+#include <memory>
 
 namespace plt
 {
-    class GLEnum
+	/////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    class SubGeometry
     {
     public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
+        SubGeometry(PrimitiveType type, const std::shared_ptr<VertexBuffer> &vertexBuffer, const std::shared_ptr<IndexBuffer> &indexBuffer);
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+        const std::shared_ptr<VertexBuffer>& getVertexBuffer() const;
 
-        static GLenum getType(PixelFormat format);
+        const std::shared_ptr<IndexBuffer>& getIndexBuffer() const;
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+        PrimitiveType getPrimitiveType() const;
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
 
-        static GLenum getShaderType(ShaderType type);
 
-        static GLenum getType(VertexElementType type);
 
-        static GLenum getIndexType(unsigned int size);
+
+        static std::shared_ptr<SubGeometry> createRightHandCoordinateSystem();
+
+    private:
+		////////////////////////////////////////////////////////////
+		// Member data
+		////////////////////////////////////////////////////////////
+        PrimitiveType m_primitiveType;
+
+        std::shared_ptr<VertexBuffer> m_vertexBuffer;
+        std::shared_ptr<IndexBuffer> m_indexBuffer;
     };
-    
+
 } // namespace plt
 
 
-#endif // PLASTIC_GLENUM_HPP
+#endif // PLASTIC_SUBGEOMETRY_HPP
+
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
+/// \class plt::SubGeometry
+///
 ///
 ////////////////////////////////////////////////////////////

@@ -28,62 +28,57 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
+#ifndef PLASTIC_VERTEXBUFFERFORMATTED_HPP
+#define PLASTIC_VERTEXBUFFERFORMATTED_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
+#include "VertexBuffer.hpp"
 
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
+#include <stdexcept>
 #include <vector>
 
 namespace plt
 {
-    class GLEnum
+	/////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    template<typename T>
+    class VertexBufferFormatted : public VertexBuffer
     {
+
     public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
+        VertexBufferFormatted(const VertexDeclaration &declaration, const std::vector<T> &vertexDatas);
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+        VertexBufferFormatted(const VertexDeclaration &declaration, std::vector<T> &&vertexDatas);
 
-        static GLenum getType(PixelFormat format);
+        virtual const void* getVertexRawData() const;
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+        virtual unsigned int getVertexCount() const;
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
+    private:
+        void checkValidity() const;
 
-        static GLenum getShaderType(ShaderType type);
-
-        static GLenum getType(VertexElementType type);
-
-        static GLenum getIndexType(unsigned int size);
+		////////////////////////////////////////////////////////////
+		// Member data
+		////////////////////////////////////////////////////////////
+        std::vector<T> m_vertexDatas;
     };
-    
+
 } // namespace plt
 
 
-#endif // PLASTIC_GLENUM_HPP
+#include "VertexBufferFormatted.inl"
+
+
+#endif // PLASTIC_VERTEXBUFFERFORMATTED_HPP
+
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
+/// \class plt::VertexBufferFormatted
+///
 ///
 ////////////////////////////////////////////////////////////

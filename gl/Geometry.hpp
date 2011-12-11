@@ -28,62 +28,60 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
+#ifndef PLASTIC_GEOMETRY_HPP
+#define PLASTIC_GEOMETRY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
+#include "SubGeometry.hpp"
 
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
+#include <memory>
 #include <vector>
 
 namespace plt
 {
-    class GLEnum
+	/////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    class Geometry
     {
+
     public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
+        Geometry();
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+        void addSubGeometry(const std::shared_ptr<SubGeometry> &sub);
 
-        static GLenum getType(PixelFormat format);
+        const std::shared_ptr<SubGeometry>& operator[](std::size_t index) const;
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+        bool hasSubGeometry() const;
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
+        std::size_t subGeometryCount() const;
 
-        static GLenum getShaderType(ShaderType type);
+        unsigned int getVertexCount() const;
 
-        static GLenum getType(VertexElementType type);
+        unsigned int getIndexCount() const;
 
-        static GLenum getIndexType(unsigned int size);
+    private:
+		////////////////////////////////////////////////////////////
+		// Member data
+		////////////////////////////////////////////////////////////   
+        std::vector< std::shared_ptr<SubGeometry> > m_subGeometry;
+
+        unsigned int m_vertexCount;
+        unsigned int m_indexCount;
     };
-    
+
 } // namespace plt
 
 
-#endif // PLASTIC_GLENUM_HPP
+#endif // PLASTIC_GEOMETRY_HPP
+
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
+/// \class plt::Geometry
+///
 ///
 ////////////////////////////////////////////////////////////

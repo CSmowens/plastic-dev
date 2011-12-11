@@ -45,6 +45,7 @@
 #define PLASTIC_DEBUG 1
 #include "GLCheck.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 namespace plt

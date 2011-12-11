@@ -87,7 +87,9 @@ namespace plt
 
         m_geometry = geometry;
 
-        m_declaration = (*geometry)[0]->getVertexDeclaration();
+        m_indexType = GLEnum::getIndexType((*geometry)[0]->getIndexBuffer()->getIndexSize());
+
+        m_declaration = (*geometry)[0]->getVertexBuffer()->getVertexDeclaration();
 
         setProgram(shader);
 
@@ -104,9 +106,9 @@ namespace plt
 
         for(std::size_t i(0); i<geometry->subGeometryCount(); ++i)
         {
-            unsigned int size = (*geometry)[i]->getVertexCount() * m_declaration.size();
+            unsigned int size = (*geometry)[i]->getVertexBuffer()->getVertexCount() * m_declaration.size();
 
-            GLCheck(glBufferSubData(GL_ARRAY_BUFFER, offsetVertex, size, (*geometry)[i]->getVertexRawData()));
+            GLCheck(glBufferSubData(GL_ARRAY_BUFFER, offsetVertex, size, (*geometry)[i]->getVertexBuffer()->getVertexRawData()));
 
             offsetVertex += size;
         }
@@ -121,13 +123,13 @@ namespace plt
 
         GLCheck(glGenBuffers(1, &m_ibo));
 	    GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo));
-	    GLCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*geometry)[0]->getSizeOfIndexType()*geometry->getIndexCount(), NULL, GL_STATIC_DRAW));
+	    GLCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*geometry)[0]->getIndexBuffer()->getIndexSize()*geometry->getIndexCount(), NULL, GL_STATIC_DRAW));
 
         for(std::size_t i(0); i<geometry->subGeometryCount(); ++i)
         {
-            unsigned int size = (*geometry)[i]->getIndexCount() * (*geometry)[0]->getSizeOfIndexType();
+            unsigned int size = (*geometry)[i]->getIndexBuffer()->getIndexCount() * (*geometry)[0]->getIndexBuffer()->getIndexSize();
 
-            GLCheck(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offsetIndex, size, (*geometry)[i]->getIndexRawData()));
+            GLCheck(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offsetIndex, size, (*geometry)[i]->getIndexBuffer()->getIndexRawData()));
 
             offsetIndex += size;
         }
@@ -190,7 +192,7 @@ namespace plt
     {
         GLCheck(glDrawElements(GLEnum::getPrimitiveType((*m_geometry)[0]->getPrimitiveType()), 
                                m_geometry->getIndexCount(),
-                               (*m_geometry)[0]->getIndexType(), 
+                               m_indexType, 
                                0));
     }
 
@@ -243,7 +245,7 @@ namespace plt
     	    GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo));
             bufferType = GL_ELEMENT_ARRAY_BUFFER;
 
-            sizeOfBuffer = (*m_geometry)[0]->getSizeOfIndexType()*m_geometry->getIndexCount();
+            sizeOfBuffer = (*m_geometry)[0]->getIndexBuffer()->getIndexSize()*m_geometry->getIndexCount();
         }
 
         

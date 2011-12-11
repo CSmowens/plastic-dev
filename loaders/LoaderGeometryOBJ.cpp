@@ -33,11 +33,12 @@
 ////////////////////////////////////////////////////////////
 #include "LoaderGeometryOBJ.hpp"
 
-#include <Plastic/Core.hpp>
+#include "../gl/VertexBufferFormatted.hpp"
+#include "../gl/IndexBufferFormatted.hpp"
 
+#include <algorithm>
 #include <array>
 #include <fstream>
-#include <map>
 #include <sstream>
 #include <iostream>
 
@@ -203,7 +204,7 @@ namespace plt
 
 
 
-    std::shared_ptr<Geometry> LoaderGeometryOBJ::createSubGeometry
+    std::shared_ptr<SubGeometry> LoaderGeometryOBJ::createSubGeometry
     (
         std::map< plt::uvec3, unsigned int > &indexMap,
         unsigned int &index,
@@ -253,7 +254,11 @@ namespace plt
         dec.add(VertexElementSemantic::TexCoord0, VertexElementType::Float2);
         dec.add(VertexElementSemantic::Normal, VertexElementType::Float3);
 
-        return std::make_shared<Geometry>(PrimitiveType::Triangles, dec, gl_vertex, gl_indices);
+        //return std::make_shared<Geometry>(PrimitiveType::Triangles, dec, gl_vertex, gl_indices);
+
+        return std::make_shared<SubGeometry>(PrimitiveType::Triangles, 
+                                             std::make_shared<VertexBufferFormatted<VertexObj>>(dec, gl_vertex),
+                                             std::make_shared<IndexBufferFormatted<unsigned int>>(gl_indices) );
     }
 
 

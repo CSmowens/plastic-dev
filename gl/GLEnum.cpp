@@ -396,4 +396,17 @@ namespace plt
         }
     }
 
+
+    GLenum GLEnum::getIndexType(unsigned int size)
+    {
+        switch(size)
+        {
+            case 1:    return GL_UNSIGNED_BYTE;    break;
+            case 2:    return GL_UNSIGNED_SHORT;   break;
+            case 4:    return GL_UNSIGNED_INT;     break;
+
+            default:    throw std::runtime_error("Unregistered size index");    break;
+        }
+    }
+
 } // namespace plt

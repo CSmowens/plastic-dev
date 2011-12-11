@@ -28,62 +28,64 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
+#include "VertexBufferRaw.hpp"
 
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
-#include <vector>
+#include <stdexcept>
 
 namespace plt
 {
-    class GLEnum
+    VertexBufferRaw::VertexBufferRaw
+    (
+        const VertexDeclaration &declaration, 
+        unsigned int vertexCount, 
+        const std::vector<ubyte> &vertexDatas
+    ) :
+    VertexBuffer(declaration),
+    m_vertexCount(vertexCount),
+    m_vertexDatas(vertexDatas)
     {
-    public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
+        checkValidity();
+    }
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
 
-        static GLenum getType(PixelFormat format);
+    VertexBufferRaw::VertexBufferRaw
+    (
+        const VertexDeclaration &declaration, 
+        unsigned int vertexCount, 
+        std::vector<ubyte> &&vertexDatas
+    ) :
+    VertexBuffer(declaration),
+    m_vertexCount(vertexCount),
+    m_vertexDatas(std::move(vertexDatas))
+    {
+        checkValidity();
+    }
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
+    const void* VertexBufferRaw::getVertexRawData
+    (
+    ) const
+    {
+        return &m_vertexDatas[0];
+    }
 
-        static GLenum getShaderType(ShaderType type);
+    unsigned int VertexBufferRaw::getVertexCount
+    (
+    ) const
+    {
+        return m_vertexCount;
+    }
 
-        static GLenum getType(VertexElementType type);
 
-        static GLenum getIndexType(unsigned int size);
-    };
-    
+    void VertexBufferRaw::checkValidity
+    (
+    ) const
+    {
+        if(m_vertexCount*m_declaration.size() != m_vertexDatas.size()*sizeof(ubyte))
+            throw std::runtime_error("Vertex data are imcompatible with vertexCount and VertexDeclaration");
+    }
+
 } // namespace plt
-
-
-#endif // PLASTIC_GLENUM_HPP
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
-///
-////////////////////////////////////////////////////////////

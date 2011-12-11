@@ -28,62 +28,45 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
+#ifndef PLASTIC_INDEXBUFFER_HPP
+#define PLASTIC_INDEXBUFFER_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
 
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
-#include <vector>
 
 namespace plt
 {
-    class GLEnum
+	/////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    class IndexBuffer
     {
+
     public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
+        virtual const void* getIndexRawData() const = 0;
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+        virtual unsigned int getIndexCount() const = 0;
 
-        static GLenum getType(PixelFormat format);
+        virtual unsigned int getIndexSize() const = 0;
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
-
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
-
-        static GLenum getShaderType(ShaderType type);
-
-        static GLenum getType(VertexElementType type);
-
-        static GLenum getIndexType(unsigned int size);
+    private:
+		////////////////////////////////////////////////////////////
+		// Member data
+		////////////////////////////////////////////////////////////
     };
-    
+
 } // namespace plt
 
 
-#endif // PLASTIC_GLENUM_HPP
+#endif // PLASTIC_INDEXBUFFER_HPP
+
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
+/// \class plt::IndexBuffer
+///
 ///
 ////////////////////////////////////////////////////////////

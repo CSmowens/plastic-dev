@@ -37,8 +37,12 @@
 ////////////////////////////////////////////////////////////
 #include <Plastic/Ressource/Loader.hpp>
 
+#include <Plastic/Core.hpp>
+
+#include "../gl/SubGeometry.hpp"
 #include "../gl/Geometry.hpp"
 
+#include <map>
 #include <memory>
 
 namespace plt
@@ -52,7 +56,7 @@ namespace plt
         virtual std::shared_ptr<Geometry> loadFromFile(const std::string& filename);
 
     private:
-        std::shared_ptr<Geometry> createSubGeometry(std::map< plt::uvec3, unsigned int > &indexMap, unsigned int &index, std::vector< vec3 > &positions, std::vector< vec3 > &normals, std::vector< vec2 > &textures, std::vector< uvec3 > &indices);
+        std::shared_ptr<SubGeometry> createSubGeometry(std::map< plt::uvec3, unsigned int > &indexMap, unsigned int &index, std::vector< vec3 > &positions, std::vector< vec3 > &normals, std::vector< vec2 > &textures, std::vector< uvec3 > &indices);
 
         struct VertexObj
         {
@@ -73,5 +77,6 @@ namespace plt
 
 ////////////////////////////////////////////////////////////
 /// \class plt::LoaderGeometryOBJ
+///
 ///
 ////////////////////////////////////////////////////////////

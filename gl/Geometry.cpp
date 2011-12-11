@@ -28,62 +28,85 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
-
-#include <Plastic/Core/PixelFormat.hpp>
-
 #include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
 
-#include <vector>
+#include <Plastic/Core/Assert.hpp>
+
+#include <stdexcept>
 
 namespace plt
 {
-    class GLEnum
+    Geometry::Geometry
+    (
+    ) :
+    m_vertexCount(0),
+    m_indexCount(0)
     {
-    public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+    }
 
-        static GLenum getType(PixelFormat format);
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+    void Geometry::addSubGeometry
+    (
+        const std::shared_ptr<SubGeometry> &sub
+    )
+    {
+        if(!m_subGeometry.empty())
+        {
+            if( m_subGeometry[0]->getVertexBuffer()->getVertexDeclaration() != sub->getVertexBuffer()->getVertexDeclaration() ||
+                m_subGeometry[0]->getIndexBuffer()->getIndexSize() != sub->getIndexBuffer()->getIndexSize() ||
+                m_subGeometry[0]->getPrimitiveType() != sub->getPrimitiveType() )
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
+                throw std::runtime_error("SubGeometry's attributes don't match");
+        }
 
-        static GLenum getShaderType(ShaderType type);
+        m_subGeometry.push_back(sub);
 
-        static GLenum getType(VertexElementType type);
+        m_vertexCount += sub->getVertexBuffer()->getVertexCount();
+        m_indexCount += sub->getIndexBuffer()->getIndexCount();
+    }
 
-        static GLenum getIndexType(unsigned int size);
-    };
-    
+
+    const std::shared_ptr<SubGeometry>& Geometry::operator[]
+    (
+        std::size_t index
+    ) const
+    {
+        PLASTIC_ASSERT(index < m_subGeometry.size());
+
+        return m_subGeometry[index];
+    }
+
+    bool Geometry::hasSubGeometry
+    (
+    ) const
+    {
+        return !m_subGeometry.empty(); 
+    }
+
+
+    std::size_t Geometry::subGeometryCount
+    (
+    ) const
+    {
+        return m_subGeometry.size();
+    }
+
+
+    unsigned int Geometry::getVertexCount() const
+    {
+        return m_vertexCount;
+    }
+
+
+    unsigned int Geometry::getIndexCount() const
+    {
+        return m_indexCount;
+    }
+
+
+
 } // namespace plt
-
-
-#endif // PLASTIC_GLENUM_HPP
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
-///
-////////////////////////////////////////////////////////////

@@ -86,6 +86,8 @@ namespace plt
 
         VertexDeclaration m_declaration;
 
+        GLenum m_indexType;
+
         GLuint m_vbo;
         GLuint m_ibo;
         GLuint m_vao;

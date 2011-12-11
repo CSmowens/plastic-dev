@@ -27,63 +27,56 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
-
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
-
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
-#include <vector>
-
 namespace plt
 {
-    class GLEnum
+    template<typename T>
+    IndexBufferFormatted<T>::IndexBufferFormatted
+    (
+        const std::vector<T> &indexDatas
+    ) :
+    m_indexDatas(indexDatas),
+    m_indexSize(sizeof(T))
     {
-    public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
 
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
+    }
 
-        static GLenum getType(PixelFormat format);
 
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+    template<typename T>
+    IndexBufferFormatted<T>::IndexBufferFormatted
+    (
+        std::vector<T> &&indexDatas
+    ) :
+    m_indexDatas(std::move(indexDatas)),
+    m_indexSize(sizeof(T))
+    {
 
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
+    }
 
-        static GLenum getShaderType(ShaderType type);
 
-        static GLenum getType(VertexElementType type);
+    template<typename T>
+    const void* IndexBufferFormatted<T>::getIndexRawData
+    (
+    ) const
+    {
+        return &m_indexDatas[0];
+    }
 
-        static GLenum getIndexType(unsigned int size);
-    };
-    
+
+    template<typename T>
+    unsigned int IndexBufferFormatted<T>::getIndexCount
+    (
+    ) const
+    {
+        return m_indexDatas.size();
+    }
+
+
+    template<typename T>
+    unsigned int IndexBufferFormatted<T>::getIndexSize
+    (
+    ) const
+    {
+        return m_indexSize;
+    }
+
 } // namespace plt
-
-
-#endif // PLASTIC_GLENUM_HPP
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
-///
-////////////////////////////////////////////////////////////
