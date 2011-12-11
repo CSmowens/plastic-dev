@@ -442,9 +442,8 @@ namespace plt
         unsigned int textureUnit
     ) const
     {
+        // Si on a un Depth** Format il faut tester aussi avec les 
         PLASTIC_CHECK_UNIFORM(location, tex->getGLSLType());
-
-        // \todo Voir si textureUnit < (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1)
 
         GLCheck( glUniform1i(location, textureUnit) );
     }

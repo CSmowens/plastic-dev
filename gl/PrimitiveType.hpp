@@ -28,60 +28,33 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_GLENUM_HPP
-#define PLASTIC_GLENUM_HPP
-
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include <Plastic/OpenGL.hpp>
-
-#include <Plastic/Core/PixelFormat.hpp>
-
-#include "Geometry.hpp"
-#include "Sampler.hpp"
-#include "Shader.hpp"
-#include "VertexElement.hpp"
-
-#include <vector>
+#ifndef PLASTIC_PRIMITIVETYPE_HPP
+#define PLASTIC_PRIMITIVETYPE_HPP
 
 namespace plt
 {
-    class GLEnum
+    /////////////////////////////////////////////////////////////////
+	///
+	/////////////////////////////////////////////////////////////////
+    enum class PrimitiveType
     {
-    public:
-        static GLenum getPrimitiveType(PrimitiveType primitiveType);
-
-        static GLenum getInternalFormat(PixelFormat format);
-        static GLenum getExternalFormat(PixelFormat format);
-
-        static GLenum getType(PixelFormat format);
-
-        static GLenum getGLSLTypeTexture1D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2D(PixelFormat format);
-        static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
-        static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
-
-        static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
-        static GLenum getMinFilter(SamplerMinFilter filter);
-        static GLenum getMagFilter(SamplerMagFilter filter);
-        static GLenum getCompareMode(SamplerCompareMode mode);
-        static GLenum getCompareFunc(SamplerCompareFunc func);
-
-        static GLenum getShaderType(ShaderType type);
-
-        static GLenum getType(VertexElementType type);
+        Triangles,
+        Lines,
+        Points
     };
-    
+
+
+
 } // namespace plt
 
 
-#endif // PLASTIC_GLENUM_HPP
+#endif // PLASTIC_PRIMITIVETYPE_HPP
+
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::GLEnum
+/// \class plt::PrimitiveType
+///
 ///
 ////////////////////////////////////////////////////////////

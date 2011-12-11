@@ -230,6 +230,58 @@ namespace plt
     }
 
 
+    std::shared_ptr<Geometry> Geometry::createGeometryWithSpaceTangent
+    (
+        const std::shared_ptr<Geometry> &geom, 
+        bool withTangents,
+        bool withBiNormals
+    )
+    {
+        // 1. Vérifier que la geometry envoyer est faite de triangles
+        // 2. Vérifier que la VertexDeclaration est compatible avec :
+                // { VertexPosition, Float3 }
+                // { VertexTexCoords, Float2 }
+                // { VertexNormal, Float3 }
+
+        // 3. Si y manque juste les normales, voir si on les calcules
+
+        // 3. Recopier la geometry avec en plus la place pour les tangentes et les BiNormals si voulus
+        // 4. Calculer l'espace local :)
+
+        return std::make_shared<Geometry>();
+    }
+
+
+    std::shared_ptr<Geometry> Geometry::createGeometryWithNormalsOnly
+    (
+        const std::shared_ptr<Geometry> &geom,
+        bool onlyNormals
+    )
+    {
+        // 1. Vérifier que la geometry envoyer est faite de triangles
+        // 2. Vérifier que la VertexDeclaration est compatible avec :
+                // { VertexPosition, Float3 }
+                // { VertexTexCoords, Float2 }
+                // { VertexNormal, Float3 }
+
+                // { VertexTangent, Float3 }   
+                // { VertexBiNormal, Float3 }
+
+        // 4. On créer la geometry composé seulement de lignes :)
+
+        return std::make_shared<Geometry>();
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

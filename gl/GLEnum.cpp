@@ -33,275 +33,367 @@
 ////////////////////////////////////////////////////////////
 #include "GLEnum.hpp"
 
+#include <stdexcept>
 
 namespace plt
 {
-    const std::vector<GLenum> GLEnum::m_primitivesTypes =
-    {
-        GL_TRIANGLES,
-        GL_LINES,
-        GL_POINTS
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_internalsFormatsTypes =
-    {
-        GL_RED,
-        GL_RG,
-        GL_RGB,
-        GL_RGBA,
-        GL_DEPTH_COMPONENT16,
-        GL_DEPTH_COMPONENT24,
-        GL_DEPTH_COMPONENT32
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_externalsFormatsTypes =
-    {
-        GL_RED,
-        GL_RG,
-        GL_RGB,
-        GL_RGBA,
-        GL_DEPTH_COMPONENT,
-        GL_DEPTH_COMPONENT,
-        GL_DEPTH_COMPONENT
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_pixelsFormatsTypes =
-    {
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-        GL_UNSIGNED_BYTE,
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_glslTypeTexture1D =
-    {
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D,
-        GL_SAMPLER_1D
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_glslTypeTexture2D =
-    {
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D,
-        GL_SAMPLER_2D
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_glslTypeTexture2DArray =
-    {
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-        GL_SAMPLER_2D_ARRAY,
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_glslTypeTextureRect =
-    {
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT,
-        GL_SAMPLER_2D_RECT
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_glslTypeTextureCubeMap = 
-    {
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE,
-        GL_SAMPLER_CUBE
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_samplerTexCoordWrapMode =
-    {
-        GL_REPEAT,
-        GL_CLAMP_TO_EDGE
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_samplerMinFilter =
-    {
-        GL_NEAREST,
-        GL_LINEAR,
-        GL_NEAREST_MIPMAP_NEAREST,
-        GL_LINEAR_MIPMAP_NEAREST,
-        GL_NEAREST_MIPMAP_LINEAR,
-        GL_LINEAR_MIPMAP_LINEAR
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_samplerMagFilter =
-    {
-        GL_NEAREST,
-        GL_LINEAR
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_samplerCompareMode =
-    {
-        GL_COMPARE_REF_TO_TEXTURE,
-        GL_NONE
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_samplerCompareFunc =
-    {    
-        GL_LEQUAL,
-        GL_GEQUAL,
-        GL_LESS,
-        GL_GREATER,
-        GL_EQUAL,
-        GL_NOTEQUAL,
-        GL_ALWAYS,
-        GL_NEVER
-    };
-
-
-    const std::vector<GLenum> GLEnum::m_shaderTypes =
-    {
-        GL_VERTEX_SHADER,
-        GL_FRAGMENT_SHADER
-    };
-
-
-
-    const std::vector<GLenum> GLEnum::m_vertexElementsTypes =
-    {
-        GL_FLOAT,
-        GL_FLOAT,
-        GL_FLOAT,
-        GL_FLOAT
-    };
-
-
-
-
-
-
-
-
-
-
-
     GLenum GLEnum::getPrimitiveType(PrimitiveType primitiveType)
     {
-        return m_primitivesTypes[ static_cast<std::size_t>(primitiveType) ];
+        switch(primitiveType)
+        {
+            case PrimitiveType::Triangles:    return GL_TRIANGLES;   break;
+            case PrimitiveType::Lines:        return GL_LINES;       break;
+            case PrimitiveType::Points:       return GL_POINTS;      break;
+
+            default:    throw std::runtime_error("Unregistered PrimitiveType");    break;
+        }
     }
 
 
     GLenum GLEnum::getInternalFormat(PixelFormat format)
     {
-        return m_internalsFormatsTypes[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:        return GL_RED;    break;
+	        case PixelFormat::RG8U:       return GL_RG;     break;
+	        case PixelFormat::RGB8U:      return GL_RGB;    break;
+	        case PixelFormat::RGBA8U:     return GL_RGBA;   break;
+
+            case PixelFormat::Depth16:    return GL_DEPTH_COMPONENT16;    break;
+            case PixelFormat::Depth24:    return GL_DEPTH_COMPONENT24;    break;
+            case PixelFormat::Depth32:    return GL_DEPTH_COMPONENT32;    break;
+
+	        case PixelFormat::R16F:       return GL_RED;    break;
+	        case PixelFormat::RG16F:      return GL_RG;     break;
+	        case PixelFormat::RGB16F:     return GL_RGB;    break;
+	        case PixelFormat::RGBA16F:    return GL_RGBA;   break;
+
+	        case PixelFormat::R32F:       return GL_RED;    break;
+	        case PixelFormat::RG32F:      return GL_RG;     break;
+	        case PixelFormat::RGB32F:     return GL_RGB;    break;
+	        case PixelFormat::RGBA32F:    return GL_RGBA;   break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getExternalFormat(PixelFormat format)
     {
-        return m_externalsFormatsTypes[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::R16F:
+	        case PixelFormat::R32F:
+                return GL_RED;
+                break;
+
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RG32F:
+                return GL_RG;
+                break;
+
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGB32F:
+                return GL_RGB;
+                break;
+
+	        case PixelFormat::RGBA8U:
+	        case PixelFormat::RGBA16F:
+	        case PixelFormat::RGBA32F:
+                return GL_RGBA;
+                break;
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+                return GL_DEPTH_COMPONENT;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getType(PixelFormat format)
     {
-        return m_pixelsFormatsTypes[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+                return GL_UNSIGNED_BYTE;
+                break;
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_FLOAT;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getGLSLTypeTexture1D(PixelFormat format)
     {
-        return m_glslTypeTexture1D[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_1D;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getGLSLTypeTexture2D(PixelFormat format)
     {
-        return m_glslTypeTexture2D[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_2D;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getGLSLTypeTexture2DArray(PixelFormat format)
     {
-        return m_glslTypeTexture2DArray[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_2D_ARRAY;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getGLSLTypeTextureRect(PixelFormat format)
     {
-        return m_glslTypeTextureRect[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_2D_RECT;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getGLSLTypeTextureCubeMap(PixelFormat format)
     {
-        return m_glslTypeTextureCubeMap[ static_cast<std::size_t>(format) ];
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_CUBE;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
     }
 
 
     GLenum GLEnum::getTexCoordWrapMode(SamplerTexCoordWrapMode mode)
     {
-        return m_samplerTexCoordWrapMode[ static_cast<std::size_t>(mode) ];
+        switch(mode)
+        {
+            case SamplerTexCoordWrapMode::Repeat:         return GL_REPEAT;           break;
+            case SamplerTexCoordWrapMode::ClampToEdge:    return GL_CLAMP_TO_EDGE;    break;
+
+            default:    throw std::runtime_error("Unregistered SamplerCompareMode");    break;
+        }
     }
+
 
     GLenum GLEnum::getMinFilter(SamplerMinFilter filter)
     {
-        return m_samplerMinFilter[ static_cast<std::size_t>(filter) ];
+        switch(filter)
+        {
+            case SamplerMinFilter::Nearest:                return GL_NEAREST;                  break;
+            case SamplerMinFilter::Linear:                 return GL_LINEAR;                   break;
+            case SamplerMinFilter::NearestMipmapNearest:   return GL_NEAREST_MIPMAP_NEAREST;   break;
+            case SamplerMinFilter::LinearMipmapNearest:    return GL_LINEAR_MIPMAP_NEAREST;    break;
+            case SamplerMinFilter::NearestMipmapLinear:    return GL_NEAREST_MIPMAP_LINEAR;    break;
+            case SamplerMinFilter::LinearMipmapLinear:     return GL_LINEAR_MIPMAP_LINEAR;     break;
+
+            default:    throw std::runtime_error("Unregistered SamplerMinFilter");    break;
+        }
     }
+
 
     GLenum GLEnum::getMagFilter(SamplerMagFilter filter)
     {
-        return m_samplerMagFilter[ static_cast<std::size_t>(filter) ];
+        switch(filter)
+        {
+            case SamplerMagFilter::Nearest:   return GL_NEAREST;  break;
+            case SamplerMagFilter::Linear:    return GL_LINEAR;   break;
+
+            default:    throw std::runtime_error("Unregistered SamplerMagFilter");    break;
+        }
     }
 
 
     GLenum GLEnum::getCompareMode(SamplerCompareMode mode)
     {
-        return m_samplerCompareMode[ static_cast<std::size_t>(mode) ];
+        switch(mode)
+        {
+            case SamplerCompareMode::CompareRefToTexture:    return GL_COMPARE_REF_TO_TEXTURE;     break;
+            case SamplerCompareMode::None:                   return GL_NONE;                       break;
+
+            default:    throw std::runtime_error("Unregistered SamplerCompareMode");    break;
+        }
     }
 
 
     GLenum GLEnum::getCompareFunc(SamplerCompareFunc func)
     {
-        return m_samplerCompareFunc[ static_cast<std::size_t>(func) ];
+        switch(func)
+        {
+            case SamplerCompareFunc::LessOrEqual:       return GL_LEQUAL;     break;
+            case SamplerCompareFunc::GreaterOrEqual:    return GL_GEQUAL;     break;
+            case SamplerCompareFunc::Less:              return GL_LESS;       break;
+            case SamplerCompareFunc::Greater:           return GL_GREATER;    break;
+            case SamplerCompareFunc::Equal:             return GL_EQUAL;      break;
+            case SamplerCompareFunc::NotEqual:          return GL_NOTEQUAL;   break;
+            case SamplerCompareFunc::Always:            return GL_ALWAYS;     break;
+            case SamplerCompareFunc::Never:             return GL_NEVER;      break;
+
+            default:    throw std::runtime_error("Unregistered SamplerCompareFunc");    break;
+        }
     }
 
 
     GLenum GLEnum::getShaderType(ShaderType type)
     {
-        return m_shaderTypes[ static_cast<std::size_t>(type) ];
+        switch(type)
+        {
+            case ShaderType::Vertex:      return GL_VERTEX_SHADER;     break;
+            case ShaderType::Fragment:    return GL_FRAGMENT_SHADER;   break;
+
+            default:    throw std::runtime_error("Unregistered ShaderType");    break;
+        }
     }
 
 
     GLenum GLEnum::getType(VertexElementType type)
     {
-        return m_vertexElementsTypes[ static_cast<std::size_t>(type) ];
+        switch(type)
+        {
+            case VertexElementType::Float1:
+            case VertexElementType::Float2:
+            case VertexElementType::Float3:
+            case VertexElementType::Float4:
+                return GL_FLOAT; 
+                break;
+
+            default:    throw std::runtime_error("Unregistered VertexElementType");    break;
+        }
     }
 
 } // namespace plt

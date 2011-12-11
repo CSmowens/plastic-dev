@@ -52,18 +52,6 @@
 
 namespace plt
 {	
-    /////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    enum class PrimitiveType
-    {
-        Triangles,
-        Lines,
-        Points
-    };
-
-
-
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
@@ -122,6 +110,9 @@ namespace plt
 
         static std::shared_ptr<Geometry> createSphere(float radius, unsigned int segmentsCount, unsigned int ringsCount, bool normals, bool texCoords);
 
+        static std::shared_ptr<Geometry> createGeometryWithSpaceTangent(const std::shared_ptr<Geometry> &geom, bool withTangents, bool withBiNormals);
+
+        static std::shared_ptr<Geometry> createGeometryWithNormalsOnly(const std::shared_ptr<Geometry> &geom, bool onlyNormals);
 
     private:
         void checkStaticGeometryValidity() const;
