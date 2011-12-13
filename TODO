@@ -39,6 +39,8 @@ HardwareBuffer:
     - Déresponsabilisé de la classe Program
     - Separer VBO et VBO/IBO
 
+    - Utiliser les layouts(location = *), pour se dissocier même des locations!
+
 
 Geometry:
     - Passer dans le core

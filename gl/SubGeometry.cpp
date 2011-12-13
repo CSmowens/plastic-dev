@@ -72,6 +72,32 @@ namespace plt
     }
 
 
+    std::shared_ptr<SubGeometry> createFullScreenQuad
+    (
+    )
+    {
+        struct VertexPosAndTexCoord
+        {
+            float x,y,u,v;
+        };
+
+
+        VertexDeclaration declaration;
+        declaration.add(VertexElementSemantic::Position, VertexElementType::Float2);
+        declaration.add(VertexElementSemantic::TexCoord0, VertexElementType::Float2);
+
+        std::vector<VertexPosAndTexCoord> vertex;
+        vertex.push_back( VertexPosAndTexCoord{0,0,    0,0} ); // Bottom left of screen
+        vertex.push_back( VertexPosAndTexCoord{0,1,    0,1} ); // Top left of screen
+        vertex.push_back( VertexPosAndTexCoord{1,1,    1,1} ); // Top right of screen
+        vertex.push_back( VertexPosAndTexCoord{1,0,    1,0} ); // Bottom right of screen
+        std::vector<unsigned char> index = {0,1,2,3,2,0};
+
+        return std::make_shared<SubGeometry>(PrimitiveType::Triangles, 
+                                             std::make_shared<VertexBufferFormatted<VertexPosAndTexCoord>>(declaration, std::move(vertex)),
+                                             std::make_shared<IndexBufferFormatted<unsigned char>>(std::move(index)) );
+    }
+
 
     std::shared_ptr<SubGeometry> SubGeometry::createFrustum
     (
@@ -168,7 +194,7 @@ namespace plt
                                                0,4,3,    3,4,7};
 
 
-        return std::make_shared<SubGeometry>(PrimitiveType::Lines, 
+        return std::make_shared<SubGeometry>(PrimitiveType::Triangles, 
                                              std::make_shared<VertexBufferFormatted<VertexPosUV>>(declaration, std::move(vertsBox)),
                                              std::make_shared<IndexBufferFormatted<unsigned char>>(std::move(indexBox)) );
     }

@@ -62,6 +62,8 @@ namespace plt
 
         static std::shared_ptr<SubGeometry> createRightHandCoordinateSystem();
 
+        static std::shared_ptr<SubGeometry> createFullScreenQuad();
+
         static std::shared_ptr<SubGeometry> createFrustum(float fovy, float ratio, float near, float far);
 
         static std::shared_ptr<SubGeometry> createBox(float width, float height, float depth, bool normals, bool texCoords);

@@ -374,6 +374,7 @@ namespace plt
         switch(type)
         {
             case ShaderType::Vertex:      return GL_VERTEX_SHADER;     break;
+            case ShaderType::Geometry:    return GL_GEOMETRY_SHADER;   break;
             case ShaderType::Fragment:    return GL_FRAGMENT_SHADER;   break;
 
             default:    throw std::runtime_error("Unregistered ShaderType");    break;

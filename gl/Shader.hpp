@@ -46,6 +46,7 @@ namespace plt
     enum class ShaderType
     {
         Vertex,
+        Geometry,
         Fragment
     };
 
