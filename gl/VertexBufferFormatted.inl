@@ -31,7 +31,7 @@
 namespace plt
 {
     template<typename T>
-    VertexBufferFormatted<T>::VertexBufferFormatted
+    inline VertexBufferFormatted<T>::VertexBufferFormatted
     (
         const VertexDeclaration &declaration, 
         const std::vector<T> &vertexDatas
@@ -44,7 +44,7 @@ namespace plt
 
 
     template<typename T>
-    VertexBufferFormatted<T>::VertexBufferFormatted
+    inline VertexBufferFormatted<T>::VertexBufferFormatted
     (
         const VertexDeclaration &declaration, 
         std::vector<T> &&vertexDatas
@@ -57,7 +57,7 @@ namespace plt
 
 
     template<typename T>
-    const void* VertexBufferFormatted<T>::getVertexRawData
+    inline const void* VertexBufferFormatted<T>::getVertexRawData
     (
     ) const
     {
@@ -66,7 +66,7 @@ namespace plt
 
 
     template<typename T>
-    unsigned int VertexBufferFormatted<T>::getVertexCount
+    inline unsigned int VertexBufferFormatted<T>::getVertexCount
     (
     ) const
     {
@@ -75,7 +75,7 @@ namespace plt
 
 
     template<typename T>
-    void VertexBufferFormatted<T>::checkValidity
+    inline void VertexBufferFormatted<T>::checkValidity
     (
     ) const
     {

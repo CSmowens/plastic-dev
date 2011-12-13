@@ -56,7 +56,6 @@ namespace plt
             
             else       
                 return v.y < u.y;
-
         }
 
         else 
@@ -122,6 +121,7 @@ namespace plt
                 case 'g':
                     if(!firstSubGeometry)
                     {
+                        //std::sort(indices.begin(), indices.end());
                         geom->addSubGeometry( createSubGeometry(indexMap, index, positions, normals, textures, indices) );
 
                         indices.clear();
@@ -195,6 +195,8 @@ namespace plt
         }
 
         // On ajoute la géométrie en cours
+
+        //std::sort(indices.begin(), indices.end());
         geom->addSubGeometry( createSubGeometry(indexMap, index, positions, normals, textures, indices) );
 
         return geom;
@@ -208,10 +210,10 @@ namespace plt
     (
         std::map< plt::uvec3, unsigned int > &indexMap,
         unsigned int &index,
-        std::vector< vec3 > &positions,
-        std::vector< vec3 > &normals,
-        std::vector< vec2 > &textures,
-        std::vector< uvec3 > &indices
+        const std::vector< vec3 > &positions,
+        const std::vector< vec3 > &normals,
+        const std::vector< vec2 > &textures,
+        const std::vector< uvec3 > &indices
     )
     {
         std::vector< unsigned int > gl_indices;
@@ -235,8 +237,8 @@ namespace plt
             else
             {
                 VertexObj  v{ positions.at(indices.at(i).x - 1),
-                           textures.at(indices.at(i).y - 1),
-                           normals.at(indices.at(i).z - 1)  };
+                              textures.at(indices.at(i).y - 1),
+                              normals.at(indices.at(i).z - 1)  };
 
                 gl_vertex.push_back(v);
 

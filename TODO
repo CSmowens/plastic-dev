@@ -43,7 +43,6 @@ HardwareBuffer:
 Geometry:
     - Passer dans le core
     - Ajouter Axis Aligned Box
-    - Optimiser la classe pour eviter les copies inutiles
     - Chargement depuis une geometry skinnée
 
     - Ajouter la création d'une box et d'une geometry pour le post processing
@@ -57,9 +56,9 @@ MediaManager:
     - Ajouter Geometry
     - Ajouter spécialisation de Loader<T> pour Image pour force le PixelFormat
     - Implémenter LoaderImageTGA pour RLE
-    - Optimiser le chargement des OBJ
     - Ajouter le chargement des images DDS
     
+    - Optimiser le chargement des OBJ
 
 Shader:
     - Ajouter Geometry Shader
@@ -70,6 +69,7 @@ Program:
     - Ajouter la gestion de la tesselation
     - Recupérer les out du fragement shader
     - Gestion Uniforn Buffer Object
+    - Lors du test du type GLSL avec les textures, gaffe aux samplerShadow***
 
     - Lorsqu'on récupère les uniform la doc dis qu'on peut nous renvoyer les built-in "gl_", faire le tris
 

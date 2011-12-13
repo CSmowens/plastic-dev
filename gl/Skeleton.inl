@@ -124,4 +124,5 @@ namespace plt
 
         PLASTIC_ASSERT(a.bonesCount() == b.bonesCount());
     }
+
 } // namespace plt

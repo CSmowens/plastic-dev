@@ -56,7 +56,7 @@ namespace plt
         virtual std::shared_ptr<Geometry> loadFromFile(const std::string& filename);
 
     private:
-        std::shared_ptr<SubGeometry> createSubGeometry(std::map< plt::uvec3, unsigned int > &indexMap, unsigned int &index, std::vector< vec3 > &positions, std::vector< vec3 > &normals, std::vector< vec2 > &textures, std::vector< uvec3 > &indices);
+        std::shared_ptr<SubGeometry> createSubGeometry(std::map< plt::uvec3, unsigned int > &indexMap, unsigned int &index, const std::vector< vec3 > &positions, const std::vector< vec3 > &normals, const std::vector< vec2 > &textures, const std::vector< uvec3 > &indices);
 
         struct VertexObj
         {

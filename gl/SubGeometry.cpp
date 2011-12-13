@@ -35,6 +35,11 @@
 
 #include "IndexBufferFormatted.hpp"
 #include "VertexBufferFormatted.hpp"
+#include "VertexBufferRaw.hpp"
+
+#include "Plastic/Core.hpp"
+
+#include <cstring>
 
 namespace plt
 {
@@ -62,12 +67,209 @@ namespace plt
         std::vector<unsigned char> index = {0,1,2,3,4,5};
 
         return std::make_shared<SubGeometry>(PrimitiveType::Lines, 
-                                             std::make_shared<VertexBufferFormatted<VertexCoordinateSystem>>(declaration, vertex),
-                                             std::make_shared<IndexBufferFormatted<unsigned char>>(index) );
+                                             std::make_shared<VertexBufferFormatted<VertexCoordinateSystem>>(declaration, std::move(vertex)),
+                                             std::make_shared<IndexBufferFormatted<unsigned char>>(std::move(index)) );
     }
 
 
 
+    std::shared_ptr<SubGeometry> SubGeometry::createFrustum
+    (
+        float fovy, 
+        float ratio, 
+        float near, 
+        float far
+    )
+    {
+	    float thetaY = radians(fovy * 0.5f);
+	    float tanThetaY = tan(thetaY);
+	    float tanThetaX = tanThetaY * ratio;
+
+
+	    float half_w = tanThetaX * near;
+	    float half_h = tanThetaY * near;
+
+	    float vpLeft   = - half_w;
+	    float vpRight  = + half_w;
+	    float vpBottom = - half_h;
+	    float vpTop    = + half_h;
+
+
+        float radio = far / near;
+        float farLeft = vpLeft * radio;
+        float farRight = vpRight * radio;
+        float farBottom = vpBottom * radio;
+        float farTop = vpTop * radio;
+
+
+
+
+
+        VertexDeclaration declaration;
+        declaration.add(VertexElementSemantic::Position, VertexElementType::Float3);
+
+        std::vector<vec3> vertex;
+        vertex.push_back( vec3(vpLeft, vpTop, -near) );       // Near top left
+        vertex.push_back( vec3(vpRight, vpTop, -near) );      // Near top right
+        vertex.push_back( vec3(vpLeft, vpBottom, -near) );    // Near bottom left
+        vertex.push_back( vec3(vpRight, vpBottom, -near) );   // Near bottom right
+
+        vertex.push_back( vec3(farLeft, farTop, -far) );      // Far top left
+        vertex.push_back( vec3(farRight, farTop, -far) );     // Far top right
+        vertex.push_back( vec3(farLeft, farBottom, -far) );   // Far bottom left
+        vertex.push_back( vec3(farRight, farBottom, -far) );  // Far bottom right
+
+
+        std::vector<unsigned char> index = {0,1,1,3,3,2,2,0,
+                                            4,5,5,7,7,6,6,4,
+                                            1,5,4,0,2,6,7,3 };
+
+        return std::make_shared<SubGeometry>(PrimitiveType::Lines, 
+                                             std::make_shared<VertexBufferFormatted<vec3>>(declaration, std::move(vertex)),
+                                             std::make_shared<IndexBufferFormatted<unsigned char>>(std::move(index)) );
+    }
+
+
+    std::shared_ptr<SubGeometry> SubGeometry::createBox
+    (
+        float width, 
+        float height, 
+        float depth,
+        bool normals,
+        bool texCoords
+    )
+    {
+
+        struct VertexPosUV
+        {
+            float x,y,z,u,v;
+        };
+
+        VertexDeclaration declaration;
+        declaration.add(VertexElementSemantic::Position, VertexElementType::Float3);
+        declaration.add(VertexElementSemantic::TexCoord0, VertexElementType::Float2);
+
+        std::vector<VertexPosUV> vertsBox;
+        vertsBox.push_back( VertexPosUV{-0.5, 0.5, 0.5,   0,0}  );
+        vertsBox.push_back( VertexPosUV{-0.5, 0.5, -0.5,   0,1}  );
+        vertsBox.push_back( VertexPosUV{0.5, 0.5, -0.5,   1,1}  );
+        vertsBox.push_back( VertexPosUV{0.5, 0.5, 0.5,   1,0}  );
+
+        vertsBox.push_back( VertexPosUV{-0.5, -0.5, 0.5,   1,1}  );
+        vertsBox.push_back( VertexPosUV{-0.5, -0.5, -0.5,   1,0}  );
+        vertsBox.push_back( VertexPosUV{0.5, -0.5, -0.5,   0,0}  );
+        vertsBox.push_back( VertexPosUV{0.5, -0.5, 0.5,   0,1}  );
+
+        std::vector<unsigned char> indexBox = {0,1,2,    2,3,0,
+                                               1,5,2,    2,5,6,
+                                               0,1,4,    1,4,5,
+                                               2,3,7,    2,7,6,
+                                               4,5,6,    4,6,7,
+                                               0,4,3,    3,4,7};
+
+
+        return std::make_shared<SubGeometry>(PrimitiveType::Lines, 
+                                             std::make_shared<VertexBufferFormatted<VertexPosUV>>(declaration, std::move(vertsBox)),
+                                             std::make_shared<IndexBufferFormatted<unsigned char>>(std::move(indexBox)) );
+    }
+
+
+    std::shared_ptr<SubGeometry> SubGeometry::createSphere
+    (
+        float radius, 
+        unsigned int segmentsCount, 
+        unsigned int ringsCount, 
+        bool normals, 
+        bool texCoords
+    )
+    {
+        if(radius<=0 || segmentsCount<3 || ringsCount<3)
+            throw std::runtime_error("Error in sphere creation parameters");
+
+        unsigned int vertexCount = (ringsCount + 1)*(segmentsCount+1);
+
+/*
+        unsigned int indexCount = 6*ringsCount*(segmentsCount + 1);
+        typedef unsigned short IndexType;
+
+        if(indexCount > std::numeric_limits<IndexType>::max())
+            throw std::runtime_error("Too much index, try a greater type, change the typedef");
+*/
+
+
+        VertexDeclaration declaration;
+        declaration.add(VertexElementSemantic::Position, VertexElementType::Float3);
+
+        if(normals)
+            declaration.add(VertexElementSemantic::Normal, VertexElementType::Float3);
+
+        if(texCoords)
+            declaration.add(VertexElementSemantic::TexCoord0, VertexElementType::Float2);
+
+
+        std::vector<ubyte> mesh(vertexCount * declaration.size());
+
+        std::vector<unsigned int> index;
+
+        std::size_t offset = 0;
+
+
+        float deltaRingAngle = (Maths<float>::PI / static_cast<float>(ringsCount));
+        float deltaSegAngle = (Maths<float>::TWO_PI / static_cast<float>(segmentsCount));
+
+        unsigned int currentVerticeIndex = 0;
+
+        for(unsigned int ring(0); ring <= ringsCount; ++ring) 
+        {
+            float r0 = radius * plt::sin (static_cast<float>(ring) * deltaRingAngle);
+            float y0 = radius * plt::cos (static_cast<float>(ring) * deltaRingAngle);
+
+            for(unsigned int seg(0); seg <= segmentsCount; ++seg) 
+            {
+                float x0 = r0 * plt::sin(static_cast<float>(seg) * deltaSegAngle);
+                float z0 = r0 * plt::cos(static_cast<float>(seg) * deltaSegAngle);
+
+                vec3 P(x0, y0, z0);
+
+                std::memcpy(&mesh[offset], &P[0], 12);
+                offset += 12;
+
+                if(normals)
+                {
+                    vec3 N = normalize(P);
+
+                    std::memcpy(&mesh[offset], &N[0], 12);
+                    offset += 12;
+                }
+                
+                if(texCoords)
+                {
+                    vec2 T;
+                    T.s = static_cast<float>(seg) / static_cast<float>(segmentsCount);
+                    T.y = static_cast<float>(ring) / static_cast<float>(ringsCount);
+
+                    std::memcpy(&mesh[offset], &T[0], 8);
+                    offset += 8;
+                }
+
+                if (ring != ringsCount) 
+                {
+                    // Each vertex (except the last) has six indices pointing to it
+                    index.push_back(currentVerticeIndex + segmentsCount + 1);
+                    index.push_back(currentVerticeIndex);
+                    index.push_back(currentVerticeIndex + segmentsCount);
+                    index.push_back(currentVerticeIndex + segmentsCount + 1);
+                    index.push_back(currentVerticeIndex + 1);
+                    index.push_back(currentVerticeIndex);
+                    currentVerticeIndex ++;
+                }
+            }
+        } 
+
+        return std::make_shared<SubGeometry>(PrimitiveType::Triangles, 
+                                             std::make_shared<VertexBufferRaw>(declaration, vertexCount, std::move(mesh)),
+                                             std::make_shared<IndexBufferFormatted<unsigned int>>(std::move(index)) );
+    }
 
 
 

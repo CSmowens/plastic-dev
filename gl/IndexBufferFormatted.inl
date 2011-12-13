@@ -30,7 +30,7 @@
 namespace plt
 {
     template<typename T>
-    IndexBufferFormatted<T>::IndexBufferFormatted
+    inline IndexBufferFormatted<T>::IndexBufferFormatted
     (
         const std::vector<T> &indexDatas
     ) :
@@ -42,7 +42,7 @@ namespace plt
 
 
     template<typename T>
-    IndexBufferFormatted<T>::IndexBufferFormatted
+    inline IndexBufferFormatted<T>::IndexBufferFormatted
     (
         std::vector<T> &&indexDatas
     ) :
@@ -54,7 +54,7 @@ namespace plt
 
 
     template<typename T>
-    const void* IndexBufferFormatted<T>::getIndexRawData
+    inline const void* IndexBufferFormatted<T>::getIndexRawData
     (
     ) const
     {
@@ -63,7 +63,7 @@ namespace plt
 
 
     template<typename T>
-    unsigned int IndexBufferFormatted<T>::getIndexCount
+    inline unsigned int IndexBufferFormatted<T>::getIndexCount
     (
     ) const
     {
@@ -72,7 +72,7 @@ namespace plt
 
 
     template<typename T>
-    unsigned int IndexBufferFormatted<T>::getIndexSize
+    inline unsigned int IndexBufferFormatted<T>::getIndexSize
     (
     ) const
     {
