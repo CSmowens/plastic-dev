@@ -28,54 +28,52 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_SUBGEOMETRY_HPP
-#define PLASTIC_SUBGEOMETRY_HPP
+#ifndef PLASTIC_GEOMETRYHELPER_HPP
+#define PLASTIC_GEOMETRYHELPER_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "IndexBuffer.hpp"
-#include "PrimitiveType.hpp"
-#include "VertexBuffer.hpp"
-
-#include <memory>
+#include "Geometry.hpp"
+#include "SubGeometry.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class SubGeometry
+    class GeometryHelper
     {
     public:
-        SubGeometry(PrimitiveType type, const std::shared_ptr<VertexBuffer> &vertexBuffer, const std::shared_ptr<IndexBuffer> &indexBuffer);
+        static std::shared_ptr<SubGeometry> createRightHandCoordinateSystem();
 
-        const std::shared_ptr<VertexBuffer>& getVertexBuffer() const;
+        static std::shared_ptr<SubGeometry> createFullScreenQuad();
 
-        const std::shared_ptr<IndexBuffer>& getIndexBuffer() const;
+        static std::shared_ptr<SubGeometry> createFrustum(float fovy, float ratio, float near, float far);
 
-        PrimitiveType getPrimitiveType() const;
+        static std::shared_ptr<SubGeometry> createBox(float width, float height, float depth, bool normals, bool texCoords);
 
-    private:
-		////////////////////////////////////////////////////////////
-		// Member data
-		////////////////////////////////////////////////////////////
-        PrimitiveType m_primitiveType;
+        static std::shared_ptr<SubGeometry> createSphere(float radius, unsigned int segmentsCount, unsigned int ringsCount, bool normals, bool texCoords);
 
-        std::shared_ptr<VertexBuffer> m_vertexBuffer;
-        std::shared_ptr<IndexBuffer> m_indexBuffer;
+
+
+
+
+        static std::shared_ptr<Geometry> addSpaceTangent(const std::shared_ptr<Geometry> &geom, bool withTangents, bool withBiNormals);
+
+        static std::shared_ptr<Geometry> createGeometryWithNormalsOnly(const std::shared_ptr<Geometry> &geom, bool onlyNormals);
     };
 
 } // namespace plt
 
 
-#endif // PLASTIC_SUBGEOMETRY_HPP
+#endif // PLASTIC_GEOMETRYHELPER_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::SubGeometry
+/// \class plt::GeometryHelper
 ///
 ///
 ////////////////////////////////////////////////////////////
