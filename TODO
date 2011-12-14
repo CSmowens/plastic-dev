@@ -5,12 +5,15 @@ Plastic:
     - Passer a CMake
     - S'occuper de la documentation
     - Remplir le README
-    - Passer à l'option -std=c++11
 
     - Revoir le Makefile, et supprimer les anciennes versions avant d'installer
 
     - Ajouter la gestion pour Win32
     
+    - Utiliser g++-4.7
+    - Faire de la classe Clock une classe template
+    - Renommer std::monotonic_clock en steady_clock
+    - Passer à l'option -std=c++11
     - Utiliser delegating constructor une fois disponible
 
 
@@ -36,18 +39,29 @@ Graphics:
 
 HardwareBuffer:
     - Renommer la classe
-    - Déresponsabilisé de la classe Program
-    - Separer VBO et VBO/IBO
+    - Separer VBO et VBO/IBO (à voir)
 
+    - Déresponsabilisé de la classe Program
     - Utiliser les layouts(location = *), pour se dissocier même des locations!
+        - Pour cela fixer à chaque VertexSemantic une 
+
+
+SubGeometry:
+    - Ajouter une Axis Aligned Box
 
 
 Geometry:
     - Passer dans le core
-    - Ajouter Axis Aligned Box
+    - Avoir une Axis Aligned Box gloable, correspondant au merge de toutes les SubGeometry
     - Chargement depuis une geometry skinnée
 
-    - Ajouter la création d'une box et d'une geometry pour le post processing
+
+GeometryHelper:
+    - Implémenter la création d'une box
+    - Implémenter l'ajout de l'espace tangent
+    - Implémenter la création de la geometry only avec normales
+
+    - Ajouter une fonction pour ajouter des attributs dans la vertexDeclaration et donc vertexBuffer
 
 
 Skeleton:
@@ -61,6 +75,7 @@ MediaManager:
     - Ajouter le chargement des images DDS
     
     - Optimiser le chargement des OBJ
+
 
 Shader:
     - Ajouter Geometry Shader
@@ -89,9 +104,13 @@ PixelFormat:
     - Ajouter des formats flottants
 
 
+PixelFormatInfos:
+    - Rendre le code plus digeste..
+
+
 GLEnum:
     - Utiliser les nouveaux types de OpenGL 4.2
-    - Assertion pour empecher les erreurs dans GLEnum
+    - Rendre le code plus digeste..
 
 
 Texture:

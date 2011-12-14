@@ -34,7 +34,6 @@
 #include "VertexElement.hpp"
 
 #include <stdexcept>
-    #include <iostream>
 
 namespace plt
 {
