@@ -314,7 +314,7 @@ namespace plt
 
 
 
-    std::shared_ptr<Geometry> Geometry::addSpaceTangent
+    std::shared_ptr<Geometry> GeometryHelper::addSpaceTangent
     (
         const std::shared_ptr<Geometry> &geom, 
         bool withTangents,
@@ -336,7 +336,7 @@ namespace plt
     }
 
 
-    std::shared_ptr<Geometry> Geometry::createGeometryWithNormalsOnly
+    std::shared_ptr<Geometry> GeometryHelper::createGeometryWithNormalsOnly
     (
         const std::shared_ptr<Geometry> &geom,
         bool onlyNormals
