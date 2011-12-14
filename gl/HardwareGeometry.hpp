@@ -65,6 +65,12 @@ namespace plt
         void draw() const;
         
     private:
+        void createAndFillVertexBuffer(const std::shared_ptr<Geometry> &geometry);
+
+        void createAndFillIndexBuffer(const std::shared_ptr<Geometry> &geometry);
+
+        void createAndFillVertexArray(const std::shared_ptr<Geometry> &geometry);
+
         void extractLocations();
 
         void initialize(const std::shared_ptr<Geometry> &geometry);
@@ -74,12 +80,14 @@ namespace plt
 		////////////////////////////////////////////////////////////
 		// Member data
 		////////////////////////////////////////////////////////////
-        std::shared_ptr<Geometry> m_geometry;
-
         std::vector<GLint> m_locations;
 
         VertexDeclaration m_declaration;
 
+        unsigned int m_vertexCountTotal;
+        unsigned int m_indexCountTotal;
+
+        GLenum m_primitiveType;
         GLenum m_indexType;
 
         GLuint m_vbo;
@@ -101,6 +109,5 @@ namespace plt
 /// \todo Sortir le #define PLASTIC_DEBUG 1
 /// \todo Prendre en compte si y a tesselation hardware
 /// \todo Etre exceptions safe
-/// \todo Dans setProgram(), penser à refaire le VAO
 ///
 ////////////////////////////////////////////////////////////

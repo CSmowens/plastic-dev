@@ -82,25 +82,32 @@ namespace plt
     )
     {
         if(!geometry->hasSubGeometry())
-            throw std::runtime_error("Empty geometry");    
+            throw std::runtime_error("Impossible to construct an HardwareGeometry from an empty Geometry");    
 
-        m_geometry = geometry;
-
-        m_indexType = GLEnum::getIndexType((*geometry)[0]->getIndexBuffer()->getIndexSize());
 
         m_declaration = (*geometry)[0]->getVertexBuffer()->getVertexDeclaration();
 
+        m_primitiveType = GLEnum::getPrimitiveType((*geometry)[0]->getPrimitiveType());
+        m_indexType = GLEnum::getIndexType((*geometry)[0]->getIndexBuffer()->getIndexSize());
+
+        m_vertexCountTotal = geometry->getVertexCount();
+        m_indexCountTotal = geometry->getIndexCount();
+
+
         extractLocations();
 
+        createAndFillVertexBuffer(geometry);
+        createAndFillIndexBuffer(geometry);
+        createAndFillVertexArray(geometry);
+    }
 
 
-
-
+    void HardwareGeometry::createAndFillVertexBuffer
+    (
+        const std::shared_ptr<Geometry> &geometry
+    )
+    {
         unsigned int offsetVertex(0);
-        unsigned int offsetIndex(0);
-
-
-
 
         GLCheck(glGenBuffers(1, &m_vbo));
 	    GLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
@@ -116,12 +123,15 @@ namespace plt
         }
 
 	    GLCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    }
 
 
-
-
-
-
+    void HardwareGeometry::createAndFillIndexBuffer
+    (
+        const std::shared_ptr<Geometry> &geometry
+    )
+    {
+        unsigned int offsetIndex(0);
 
         GLCheck(glGenBuffers(1, &m_ibo));
 	    GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo));
@@ -137,10 +147,14 @@ namespace plt
         }
 
 	    GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    }
 
 
-
-
+    void HardwareGeometry::createAndFillVertexArray
+    (
+        const std::shared_ptr<Geometry> &geometry
+    )
+    {
 	    GLCheck(glGenVertexArrays(1, &m_vao));
         GLCheck(glBindVertexArray(m_vao));
 		    GLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
@@ -200,8 +214,8 @@ namespace plt
     (
     ) const
     {
-        GLCheck(glDrawElements(GLEnum::getPrimitiveType((*m_geometry)[0]->getPrimitiveType()), 
-                               m_geometry->getIndexCount(),
+        GLCheck(glDrawElements(m_primitiveType, 
+                               m_indexCountTotal,
                                m_indexType, 
                                0));
     }
