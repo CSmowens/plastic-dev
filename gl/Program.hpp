@@ -106,7 +106,7 @@ namespace plt
 
 		void extractDeclaration();
 
-        //void setAttribsLocations() const;
+        void checkAttribsLocations() const;
 
         void initialize(const std::vector<std::shared_ptr<Shader>> &shaders);
 

@@ -94,7 +94,7 @@ namespace plt
 	    getAttributesInfos();
 
 	    extractDeclaration();
-        //setAttribsLocations();
+        checkAttribsLocations();
 	}
 
 
@@ -116,8 +116,8 @@ namespace plt
         return m_declaration;
     }
 
-/*
-    void Program::setAttribsLocations
+
+    void Program::checkAttribsLocations
     (
     ) const
     {
@@ -126,13 +126,11 @@ namespace plt
 
         for(std::size_t i(0); i<m_declaration.count(); ++i)
         {
-            GLCheck(glBindAttribLocation (m_program, 
-                                          static_cast<unsigned int>(m_declaration[i].getSemantic()), 
-                                          "eee"//VertexElement::toString(m_declaration[i].getSemantic()).c_str()
-                                         )); 
+            if( m_attributes[i].location != static_cast<unsigned int>(m_declaration[i].getSemantic()) )
+                throw std::runtime_error("Bad layout(location = *) in shader");
         }
     }
-*/
+
 
     void Program::checkProgram
     (
