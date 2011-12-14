@@ -63,8 +63,6 @@ namespace plt
 
         const VertexDeclaration& getVertexDeclaration() const;
 
-        std::vector<GLint> getAttribsLocations(const VertexDeclaration &declaration) const;
-
         void bind() const;
 
         GLint getUniformLocation(const std::string &name) const;
@@ -84,7 +82,7 @@ namespace plt
         void setParameter(const std::string &name, const std::shared_ptr<Texture> &tex, unsigned int textureUnit) const;
         void setParameter(GLint location, const std::shared_ptr<Texture> &tex, unsigned int textureUnit) const;
 
-    //private:
+    private:
 		struct UniformInfo
 		{
 			GLint location;
@@ -107,6 +105,8 @@ namespace plt
 		void getAttributesInfos();
 
 		void extractDeclaration();
+
+        //void setAttribsLocations() const;
 
         void initialize(const std::vector<std::shared_ptr<Shader>> &shaders);
 

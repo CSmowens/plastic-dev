@@ -94,6 +94,7 @@ namespace plt
 	    getAttributesInfos();
 
 	    extractDeclaration();
+        //setAttribsLocations();
 	}
 
 
@@ -115,29 +116,23 @@ namespace plt
         return m_declaration;
     }
 
-
-    std::vector<GLint> Program::getAttribsLocations
+/*
+    void Program::setAttribsLocations
     (
-        const VertexDeclaration &declaration
     ) const
     {
-        if( !areCompatible(declaration, m_declaration) )
-            throw std::runtime_error("Declarations aren't compatible");
+        if(m_declaration.count() != m_attributes.size())
+            throw std::runtime_error("Error in shader attributes, check declaration and attributes vector");
 
-        std::vector<GLint> locations(m_declaration.count());
-
-        for(std::size_t i(0); i<declaration.count(); ++i)
+        for(std::size_t i(0); i<m_declaration.count(); ++i)
         {
-            for(std::size_t j(0); j<m_declaration.count(); ++j)
-            {
-                if(declaration[i].getSemantic() == m_declaration[j].getSemantic() && declaration[i].getType() == m_declaration[j].getType() )
-                    locations[i] = m_attributes[j].location;
-            }
+            GLCheck(glBindAttribLocation (m_program, 
+                                          static_cast<unsigned int>(m_declaration[i].getSemantic()), 
+                                          "eee"//VertexElement::toString(m_declaration[i].getSemantic()).c_str()
+                                         )); 
         }
-
-        return locations;
     }
-
+*/
 
     void Program::checkProgram
     (

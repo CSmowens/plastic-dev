@@ -28,90 +28,79 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_VERTEXELEMENT_HPP
-#define PLASTIC_VERTEXELEMENT_HPP
+#ifndef PLASTIC_HARDWAREGEOMETRY_HPP
+#define PLASTIC_HARDWAREGEOMETRY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include <Plastic/OpenGL.hpp>
 
-#include "VertexElementSemantic.hpp"
-#include "VertexElementType.hpp"
+#include "Geometry.hpp"
+#include "VertexDeclaration.hpp"
 
-#include <map>
-#include <string>
+#include <memory>
 #include <vector>
 
+#define PLASTIC_DEBUG 1
+#include "GLCheck.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class VertexElement
+    class HardwareGeometry
     {
 
     public:
-        VertexElement() = default;
+        HardwareGeometry(const std::shared_ptr<Geometry> &geometry);
 
-        VertexElement(VertexElementSemantic semantic, VertexElementType type, std::size_t offset);
+        ~HardwareGeometry();
 
+        void bind() const;
+
+        void unbind() const;
+
+        void draw() const;
         
-        VertexElementSemantic getSemantic() const;
+    private:
+        void extractLocations();
 
-        VertexElementType getType() const;
+        void initialize(const std::shared_ptr<Geometry> &geometry);
 
-        std::size_t getOffset() const;
+        void cleanUp();
 
-
-        static VertexElementSemantic toSemantic(const std::string &str);
-        
-        static std::string toString(VertexElementSemantic semantic);
-
-		static VertexElementType toType(GLenum type);
-
-        static std::size_t size(VertexElementType type);
-
-        static std::size_t count(VertexElementType type);
-
-    public:
 		////////////////////////////////////////////////////////////
 		// Member data
-		////////////////////////////////////////////////////////////   
-        VertexElementSemantic m_semantic; ///< The meaning of the element 
-        VertexElementType m_type; ///< The type of element
-        std::size_t m_offset; ///< 
+		////////////////////////////////////////////////////////////
+        std::shared_ptr<Geometry> m_geometry;
 
-    private:
-        static const std::vector<std::size_t> m_sizeFromType;
-        static const std::vector<std::size_t> m_countFromType;
+        std::vector<GLint> m_locations;
 
-        static const std::vector<std::string> m_nameFromSemantic;
+        VertexDeclaration m_declaration;
 
-        static const std::map<std::string, VertexElementSemantic> m_semanticFromName;
+        GLenum m_indexType;
+
+        GLuint m_vbo;
+        GLuint m_ibo;
+        GLuint m_vao;
     };
-
-
-    bool operator==(const VertexElement &u, const VertexElement &v);
-    bool operator!=(const VertexElement &u, const VertexElement &v);
 
 } // namespace plt
 
 
-#endif // PLASTIC_VERTEXELEMENT_HPP
+#endif // PLASTIC_HARDWAREGEOMETRY_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::VertexElement
+/// \class plt::HardwareGeometry
 ///
-/// \todo Faire des assertions pour protégés les fonctions size, count...
-/// \todo Ajouter les types int, uint...
-///
-/// \warning If you modify the source code from VertexElementSemantic
-/// or VertexElementType, modify the others statics elements
-/// in the class.
+/// \todo Sortir le #define PLASTIC_DEBUG 1
+/// \todo Prendre en compte si y a tesselation hardware
+/// \todo Etre exceptions safe
+/// \todo Dans setProgram(), penser à refaire le VAO
 ///
 ////////////////////////////////////////////////////////////
