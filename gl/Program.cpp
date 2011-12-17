@@ -94,7 +94,18 @@ namespace plt
 	    getAttributesInfos();
 
 	    extractDeclaration();
-        checkAttribsLocations();
+        assignAttribsLocations();
+
+
+
+
+
+
+        // We need to re-link the program after bind attrib location...
+	    GLCheck(glLinkProgram(m_program));
+        checkProgram();
+
+        // Update la location des attributs et autres...
 	}
 
 
@@ -117,17 +128,19 @@ namespace plt
     }
 
 
-    void Program::checkAttribsLocations
+    void Program::assignAttribsLocations
     (
     ) const
     {
         if(m_declaration.count() != m_attributes.size())
             throw std::runtime_error("Error in shader attributes, check declaration and attributes vector");
 
-        for(std::size_t i(0); i<m_declaration.count(); ++i)
+        for(std::size_t i(0); i<m_attributes.size(); ++i)
         {
-            if( m_attributes[i].location != static_cast<unsigned int>(m_declaration[i].getSemantic()) )
-                throw std::runtime_error("Bad layout(location = *) in shader");
+            GLCheck(glBindAttribLocation (m_program,
+                                          static_cast<unsigned int>(m_declaration[i].getSemantic()),
+                                          &m_attributes[i].name[0]
+                                          ));
         }
     }
 

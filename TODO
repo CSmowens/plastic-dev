@@ -90,6 +90,8 @@ Program:
 
     - Lorsqu'on récupère les uniform la doc dis qu'on peut nous renvoyer les built-in "gl_", faire le tris
 
+    - Dégager cette horreur de deuxième link et trouver une solution
+
 
 RenderTarget:
     - Voir si clear doit se retrouver implémenter en direct et non en virtual

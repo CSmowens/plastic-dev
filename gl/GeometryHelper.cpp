@@ -87,10 +87,10 @@ namespace plt
         declaration.add(VertexElementSemantic::TexCoord0, VertexElementType::Float2);
 
         std::vector<VertexPosAndTexCoord> vertex;
-        vertex.push_back( VertexPosAndTexCoord{0,0,    0,0} ); // Bottom left of screen
-        vertex.push_back( VertexPosAndTexCoord{0,1,    0,1} ); // Top left of screen
-        vertex.push_back( VertexPosAndTexCoord{1,1,    1,1} ); // Top right of screen
-        vertex.push_back( VertexPosAndTexCoord{1,0,    1,0} ); // Bottom right of screen
+        vertex.push_back( VertexPosAndTexCoord{-1,-1,    0,0} ); // Bottom left of screen
+        vertex.push_back( VertexPosAndTexCoord{-1,1,    0,1} );  // Top left of screen
+        vertex.push_back( VertexPosAndTexCoord{1,1,    1,1} );   // Top right of screen
+        vertex.push_back( VertexPosAndTexCoord{1,-1,    1,0} );  // Bottom right of screen
         std::vector<unsigned char> index = {0,1,2,3,2,0};
 
         return std::make_shared<SubGeometry>(PrimitiveType::Triangles, 

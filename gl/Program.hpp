@@ -106,7 +106,7 @@ namespace plt
 
 		void extractDeclaration();
 
-        void checkAttribsLocations() const;
+        void assignAttribsLocations() const;
 
         void initialize(const std::vector<std::shared_ptr<Shader>> &shaders);
 
@@ -137,16 +137,15 @@ namespace plt
 ////////////////////////////////////////////////////////////
 /// \class plt::Program
 ///
-/// \todo Passer les attributs en private
 /// \todo Sortir la macro #define PLASTIC_DEBUG 1
 /// \todo Etre exception safe
 /// \todo Renvoyer l'erreur OpenGL aussi
-/// \todo Gérer les autres types de shader et savoir si tesselation hardware est activée
-/// \todo Faire une assertion pour verifier lors d'un setParameter que le type est le bon 
 /// \todo Avoir un constructeur par défaut avec les delegating constructor
 /// \todo En cas d'exception gérer aussi les shader OpenGL à détruire et pas que le program
 /// \todo Gérer les sorties des shader, notament pour faire du MRT
 ///
 /// \todo Verifier que textureUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
+///
+/// \todo Sortir le deuxième link !!
 ///
 ////////////////////////////////////////////////////////////
