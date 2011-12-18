@@ -43,7 +43,7 @@ HardwareBuffer:
 
     - Déresponsabilisé de la classe Program
     - Utiliser les layouts(location = *), pour se dissocier même des locations!
-        - Pour cela fixer à chaque VertexSemantic une 
+        - Pour cela fixer à chaque VertexSemantic une valeur
 
 
 SubGeometry:
@@ -94,11 +94,15 @@ Program:
 
 
 RenderTarget:
-    - Voir si clear doit se retrouver implémenter en direct et non en virtual
+    - Voir si clear et m_clearMask doit se retrouver implémenter en direct et non en virtual
 
 
 RenderTexure:
     - Implémenter les vérifications
+    - Finir d'implémenter les attach et detach de texture!    
+    - Vérifier que les attachments ne sont pas supérieur au nombre max d'attach maximum
+    - Si plusieurs colors attachements vérifier avant glDrawBuffer que le nombre de MRT est possible
+    - Voir quoi faire si aucun color buffer
 
 
 PixelFormat:

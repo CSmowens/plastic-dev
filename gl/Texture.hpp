@@ -100,6 +100,8 @@ namespace plt
 
         TextureType getTextureType() const;
 
+        const uvec2& getDimensions() const;
+
         bool hasMipmaps() const;
 
 
@@ -121,6 +123,8 @@ namespace plt
 		//////////////////////////////////////////////////////////// 
         PixelFormat m_format;
         TextureType m_textureType;
+
+        uvec2 m_dimensions;
 
         TextureMipmapFlag m_textureMipMapFlag;
 

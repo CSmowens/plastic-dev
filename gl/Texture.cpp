@@ -253,6 +253,14 @@ namespace plt
     }
 
 
+    const uvec2& Texture::getDimensions
+    (
+    ) const
+    {
+        return m_dimensions;
+    }
+
+
     bool Texture::hasMipmaps
     (   
     ) const
@@ -275,6 +283,7 @@ namespace plt
         m_format = format;
         m_textureType = texType;
         m_textureMipMapFlag = TextureMipmapFlag::NoMipMap;
+        m_dimensions = dimensions;
         m_hasMipMap = false;
 
         m_target = uploader->getGLTarget();
@@ -308,6 +317,7 @@ namespace plt
         m_format = (*images[0])[0].getFormat();
         m_textureType = texType;
         m_textureMipMapFlag = texMipMapFlag;
+        m_dimensions = (*images[0])[0].getDimensions();
 
         m_target = uploader->getGLTarget();
         m_glslType = uploader->getGLSLType(m_format);

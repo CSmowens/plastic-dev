@@ -45,6 +45,7 @@
 #include "RenderBuffer.hpp"
 #include "Texture.hpp"
 
+#include <map>
 #include <vector>
 
 namespace plt
@@ -112,11 +113,11 @@ namespace plt
 
         void cleanUp();
 
+        void checkDimensions(const uvec2 &dimensions);
+
         void attachTexture(const std::shared_ptr<Texture> &texture, GLenum attachment);
 
-        void attachRenderBuffer(const std::shared_ptr<RenderBuffer> &renderbuffer, GLenum attachment);
-        
-        void detach(GLenum attachment);
+        void detachTexture(GLenum attachment);
 
 
         /////////////////////////////////////////////////////////////////
@@ -125,7 +126,7 @@ namespace plt
         enum class AttachedImageType
         {
             Texture,
-            Fragment
+            RenderBuffer
         };
 
 
@@ -139,10 +140,11 @@ namespace plt
         uvec2 m_dimensions;
 
         GLint m_maxColorAttachments;
-        std::vector< std::pair<AttachedImageType, bool> > m_colorAttachments;
+        std::map<unsigned int, AttachedImageType> m_colorAttachments;
+        std::vector<GLenum> m_drawBuffers;
 
-        std::pair<AttachedImageType, bool> m_depthAttachment;
-        //std::pair<AttachedImageType, bool> m_depthAttachment;
+        std::pair<bool, AttachedImageType> m_depthAttachment;
+        //std::pair<AttachedImageType, bool> m_stencilAttachment;
     };
 
 

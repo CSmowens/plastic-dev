@@ -38,6 +38,7 @@
 
 #include "GLEnum.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 namespace plt
@@ -92,6 +93,8 @@ namespace plt
     ) const
     {
         GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, m_fbo) );
+
+	    GLCheck(glDrawBuffers(m_drawBuffers.size(), &m_drawBuffers[0]));
     }
 
 
@@ -129,19 +132,16 @@ namespace plt
 
         m_clearMask = 0;
 
-
         m_maxColorAttachments = 0;
         GLCheck( glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &m_maxColorAttachments) );
         
 
-        m_depthAttachment = std::make_pair(AttachedImageType::Texture, false);
+        m_depthAttachment.first = false;
 
 
         GLCheck( glGenFramebuffers(1, &m_fbo) );
         bind();
         unbind();
-
-        //checkValidity();
     }
 
 
@@ -152,6 +152,247 @@ namespace plt
         if( glIsFramebuffer(m_fbo) )
             GLCheck( glDeleteFramebuffers(1, &m_fbo) );
     }
+
+
+    void RenderTexture::checkDimensions
+    (
+        const uvec2 &dimensions
+    )
+    {
+        if(m_colorAttachments.size() > 0 || m_depthAttachment.first)
+        {
+            if(dimensions != m_dimensions)
+                throw std::runtime_error("All attached image must have same dimensions");
+        }
+
+        else m_dimensions = dimensions;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void RenderTexture::attachDepthBuffer
+    (
+        const std::shared_ptr<Texture> &texture
+    )
+    {
+        if(m_depthAttachment.first)
+            throw std ::runtime_error("Framebuffer have got already a depht buffer");
+
+        checkDimensions(texture->getDimensions());
+
+        attachTexture(texture, GL_DEPTH_ATTACHMENT);
+
+        m_depthAttachment = std::make_pair(true, AttachedImageType::Texture);
+        m_clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+
+
+    void RenderTexture::attachDepthBuffer
+    (
+        const std::shared_ptr<RenderBuffer> &renderbuffer    
+    )
+    {
+        if(m_depthAttachment.first)
+            throw std ::runtime_error("Framebuffer have got already a depht buffer");
+
+        checkDimensions(renderbuffer->getDimensions());
+
+        GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer->getOpenGLHandle()) );
+
+        m_depthAttachment = std::make_pair(true, AttachedImageType::RenderBuffer);
+        m_clearMask |= GL_DEPTH_BUFFER_BIT;
+    }
+    
+
+    void RenderTexture::detachDepthBuffer
+    (
+    )
+    {
+        if(!m_depthAttachment.first)
+            throw std ::runtime_error("Framebuffer haven't got a depht buffer");
+
+
+        if(m_depthAttachment.second == AttachedImageType::Texture)
+            detachTexture(GL_DEPTH_ATTACHMENT);
+
+        else
+            GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, 0) );
+
+        m_depthAttachment.first = false;
+        m_clearMask ^= GL_DEPTH_BUFFER_BIT;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void RenderTexture::attachColorBuffer
+    (
+        const std::shared_ptr<Texture> &texture, 
+        unsigned int attachment
+    )
+    {
+        auto it = m_colorAttachments.find(attachment);
+
+        if(it != m_colorAttachments.end())
+            throw std::runtime_error("Framebuffer have already a color buffer on this attachment");
+
+        checkDimensions(texture->getDimensions());
+
+        attachTexture(texture, GL_COLOR_ATTACHMENT0 + attachment);
+
+        m_colorAttachments.insert(std::make_pair(attachment, AttachedImageType::Texture));
+        m_clearMask |= GL_COLOR_BUFFER_BIT;
+        m_drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + attachment);
+    }
+
+
+    void RenderTexture::attachColorBuffer
+    (
+        const std::shared_ptr<RenderBuffer> &renderbuffer, 
+        unsigned int attachment
+    )
+    {
+        auto it = m_colorAttachments.find(attachment);
+
+        if(it != m_colorAttachments.end())
+            throw std::runtime_error("Framebuffer have already a color buffer on this attachment");
+
+        checkDimensions(renderbuffer->getDimensions());
+        GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachment, GL_RENDERBUFFER, renderbuffer->getOpenGLHandle()) );
+
+        m_colorAttachments.insert(std::make_pair(attachment, AttachedImageType::RenderBuffer));
+        m_clearMask |= GL_COLOR_BUFFER_BIT;
+        m_drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + attachment);
+    }
+
+    
+    void RenderTexture::detachColorBuffer
+    (
+        unsigned int attachment
+    )
+    {
+        auto it = m_colorAttachments.find(attachment);
+
+        if(it == m_colorAttachments.end())
+            throw std::runtime_error("Framebuffer haven't a color buffer on this attachment");
+
+        if(m_depthAttachment.second == AttachedImageType::Texture)
+            detachTexture(GL_COLOR_ATTACHMENT0 + attachment);
+
+        else
+            GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachment, GL_RENDERBUFFER, 0) );
+
+        m_colorAttachments.erase(it);
+
+        if(m_colorAttachments.size() == 0)
+            m_clearMask ^= GL_COLOR_BUFFER_BIT;
+
+        m_drawBuffers.erase( std::find(m_drawBuffers.begin(), m_drawBuffers.end(), GL_COLOR_ATTACHMENT0 + attachment) );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void RenderTexture::attachTexture
+    (
+        const std::shared_ptr<Texture> &texture, 
+        GLenum attachment
+    )   
+    {
+        switch(texture->getTextureType())
+        {
+            case TextureType::TwoDimensions:
+            case TextureType::Rectangle:
+                GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, texture->getOpenGLTarget(), texture->getOpenGLHandle(), 0) );
+                break;
+
+            default:
+                throw std::runtime_error("Impossible to attach a texture of this type");
+                break;
+        }
+    }
+
+
+    void RenderTexture::detachTexture
+    (
+        GLenum attachment
+    )
+    {
+        GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_RECTANGLE, 0, 0) );
+/*
+        switch(texture->getTextureType())
+        {
+            case TextureType::TwoDimensions:
+                GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, 0, 0) );
+                break;
+
+            case TextureType::Rectangle:
+                GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_RECTANGLE, 0, 0) );
+                break;
+
+            default:
+                throw std::runtime_error("Impossible to detach a texture of this type");
+                break;
+        }
+*/
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     void RenderTexture::checkValidity
@@ -232,153 +473,6 @@ namespace plt
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    void RenderTexture::attachDepthBuffer
-    (
-        const std::shared_ptr<Texture> &texture
-    )
-    {
-        attachTexture(texture, GL_DEPTH_ATTACHMENT);
-
-        m_clearMask |= GL_DEPTH_BUFFER_BIT;
-    }
-
-
-    void RenderTexture::attachDepthBuffer
-    (
-        const std::shared_ptr<RenderBuffer> &renderbuffer    
-    )
-    {
-        attachRenderBuffer(renderbuffer, GL_DEPTH_ATTACHMENT);
-
-        m_clearMask |= GL_DEPTH_BUFFER_BIT;
-    }
-    
-
-    void RenderTexture::detachDepthBuffer
-    (
-    )
-    {
-        detach(GL_DEPTH_ATTACHMENT);
-
-        m_clearMask ^= GL_DEPTH_BUFFER_BIT;
-    }
-
-
-    void RenderTexture::attachColorBuffer
-    (
-        const std::shared_ptr<Texture> &texture, 
-        unsigned int attachment
-    )
-    {
-        attachTexture(texture, GL_COLOR_ATTACHMENT0 + attachment);
-
-        m_clearMask |= GL_COLOR_BUFFER_BIT;
-    }
-
-
-    void RenderTexture::attachColorBuffer
-    (
-        const std::shared_ptr<RenderBuffer> &renderbuffer, 
-        unsigned int attachment
-    )
-    {
-        attachRenderBuffer(renderbuffer, GL_COLOR_ATTACHMENT0 + attachment);
-
-        m_clearMask |= GL_COLOR_BUFFER_BIT;
-    }
-
-    
-    void RenderTexture::detachColorBuffer
-    (
-        unsigned int attachment
-    )
-    {
-        detach(GL_COLOR_ATTACHMENT0 + attachment);
-
-        m_clearMask ^= GL_COLOR_BUFFER_BIT;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Verifier l'attachment et qu'il est dispo
-    // Mettre à jour les infos sur le depth et color
-    // Verifier les dimensions
-    // Changer le maskClear (le xor ^ ne fonctionnera que si le attach avait bien fait le |= avant donc qu'il y a bien quelque chose)
-
-    // Changer les drawBuffers à actualiser lors du bind
-
-
-    void RenderTexture::attachTexture
-    (
-        const std::shared_ptr<Texture> &texture, 
-        GLenum attachment
-    )
-    {
-        // Assert qu'on a une texture de type Rectangle ou 2D...
-
-        GLCheck( glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, texture->getOpenGLTarget(), texture->getOpenGLHandle(), 0) );
-    }
-
-
-    void RenderTexture::attachRenderBuffer
-    (
-        const std::shared_ptr<RenderBuffer> &renderbuffer, 
-        GLenum attachment
-    )
-    {
-        GLCheck( glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, renderbuffer->getOpenGLHandle()) );
-    }
-
-    
-    void RenderTexture::detach
-    (
-        GLenum attachment
-    )   
-    {
-        // Mettre a 0 le bon soit la texture soit le renderbuffer...
-
-        // Mettre à jour les infos sur le depth et color
-    }
-
 
 } // namespace plt
 

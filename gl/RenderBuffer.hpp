@@ -64,6 +64,8 @@ namespace plt
 
         PixelFormat getPixelFormat() const;
 
+        const uvec2& getDimensions() const;
+
 
     private:
         void initialize(PixelFormat format, const uvec2 &dimensions);

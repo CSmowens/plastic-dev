@@ -121,6 +121,14 @@ namespace plt
     }
 
 
+    const uvec2& RenderBuffer::getDimensions
+    (
+    ) const
+    {
+        return m_dimensions;
+    }
+
+
     void RenderBuffer::initialize
     (
         PixelFormat format,
