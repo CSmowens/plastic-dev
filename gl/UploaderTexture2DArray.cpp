@@ -27,54 +27,74 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTURE_HPP
-#define PLASTIC_UPLOADERTEXTURE_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "Texture.hpp"
+#include "UploaderTexture2DArray.hpp"
+
+#include <Plastic/Core/PixelFormatInfos.hpp>
+
+#include "GLCheck.hpp"
+#include "GLEnum.hpp"
 
 namespace plt
 {
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    class UploaderTexture
+    TextureType UploaderTexture2DArray::getTextureTypeToLoad
+    (
+    )   
     {
-    public:
-        virtual TextureType getTextureTypeToLoad() = 0;
+        return TextureType::TwoDimensionsArray;
+    }
 
-        virtual GLenum getGLSLType(PixelFormat format) = 0;
 
-        virtual GLenum getGLTarget() = 0;
+    GLenum UploaderTexture2DArray::getGLSLType
+    (
+        PixelFormat format
+    )
+    {
+        return GLEnum::getGLSLTypeTexture2DArray(format);
+    }
 
-        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
 
-        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
+    GLenum UploaderTexture2DArray::getGLTarget
+    (
+    )
+    {
+        return GL_TEXTURE_2D_ARRAY;
+    }
 
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels) = 0;
 
-    protected:
-        void checkDimensionsArePowerOfTwo(const uvec2 &dimensions);
+    void UploaderTexture2DArray::checkImages
+    (
+        TextureMipmapFlag texMipMapFlag,
+        const std::vector< std::shared_ptr<Image> > &images
+    )
+    {
+        checkFirstImage(texMipMapFlag, images[0]);
+        checkOtherImages(texMipMapFlag, images);
+    }
 
-        void checkFirstImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
 
-        void checkOtherImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-    };
+    void UploaderTexture2DArray::uploadImages
+    (
+        TextureMipmapFlag texMipMapFlag,
+        const std::vector< std::shared_ptr<Image> > &images
+    )
+    {
+
+    }
+
+
+    void UploaderTexture2DArray::allocateTextureMemory
+    (
+        PixelFormat format, 
+        const uvec2 &dimensions,
+        unsigned int levels
+    )
+    {
+        checkDimensionsArePowerOfTwo(dimensions);
+    }
+
 
 } // namespace plt
-
-
-#endif // PLASTIC_UPLOADERTEXTURE_HPP
-
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::UploaderTexture
-///
-/// \todo Utiliser glTexStorage* plutôt!! Nécéssite OpenGL 4.2
-/// \todo Centraliser les fontions pour verifier qu'il y a bien une image ou plusieurs, etc
-///
-////////////////////////////////////////////////////////////

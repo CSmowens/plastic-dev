@@ -58,10 +58,12 @@ namespace plt
         static GLenum getType(PixelFormat format);
 
         static GLenum getGLSLTypeTexture1D(PixelFormat format);
+        static GLenum getGLSLTypeTexture1DArray(PixelFormat format);
         static GLenum getGLSLTypeTexture2D(PixelFormat format);
         static GLenum getGLSLTypeTexture2DArray(PixelFormat format);
         static GLenum getGLSLTypeTextureRect(PixelFormat format);
-        static GLenum getGLSLTypeTextureCubeMap(PixelFormat format);
+        static GLenum getGLSLTypeTextureCubemap(PixelFormat format);
+        static GLenum getGLSLTypeTextureCubemapArray(PixelFormat format);
 
         static GLenum getTexCoordWrapMode(SamplerTexCoordWrapMode mode);
         static GLenum getMinFilter(SamplerMinFilter filter);

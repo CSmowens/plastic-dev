@@ -112,7 +112,7 @@ namespace plt
         unsigned int levels
     )
     {
-        checkDimensionsArePlasticOfTwo(dimensions);
+        checkDimensionsArePowerOfTwo(dimensions);
        
         // Use glTexStorage1D instead, it's the same but OpenGL 4.2!! Remplacer même l'exception
 

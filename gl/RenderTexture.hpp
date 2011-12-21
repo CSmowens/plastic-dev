@@ -62,7 +62,7 @@ namespace plt
 		/// \brief Default constructor
         ///
 		////////////////////////////////////////////////////////////
-        RenderTexture(const uvec2 &dimensions);
+        RenderTexture();
 
         virtual ~RenderTexture();
 

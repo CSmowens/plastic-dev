@@ -34,11 +34,15 @@
 #include "Texture.hpp"
 
 #include "GLEnum.hpp"
+
 #include "UploaderTexture.hpp"
 #include "UploaderTexture1D.hpp"
 #include "UploaderTexture2D.hpp"
-#include "UploaderTextureCubeMap.hpp"
+#include "UploaderTextureCubemap.hpp"
 #include "UploaderTextureRect.hpp"
+#include "UploaderTexture1DArray.hpp"
+#include "UploaderTexture2DArray.hpp"
+#include "UploaderTextureCubemapArray.hpp"
 
 #include <Plastic/Core/Vector2.hpp>
 
@@ -56,8 +60,11 @@ namespace plt
         {
             std::make_shared<UploaderTexture1D>(),
             std::make_shared<UploaderTexture2D>(),
-            std::make_shared<UploaderTextureCubeMap>(),
-            std::make_shared<UploaderTextureRect>()
+            std::make_shared<UploaderTextureCubemap>(),
+            std::make_shared<UploaderTextureRect>(),
+            std::make_shared<UploaderTexture1DArray>(),
+            std::make_shared<UploaderTexture2DArray>(),
+            std::make_shared<UploaderTextureCubemapArray>()
         };
 
         std::shared_ptr<UploaderTexture> findUploader(TextureType texType)

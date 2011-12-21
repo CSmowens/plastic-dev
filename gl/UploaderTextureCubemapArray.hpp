@@ -27,54 +27,46 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTURE_HPP
-#define PLASTIC_UPLOADERTEXTURE_HPP
+
+#ifndef PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
+#define PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "Texture.hpp"
+#include "UploaderTexture.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTexture
+    class UploaderTextureCubemapArray : public UploaderTexture
     {
     public:
-        virtual TextureType getTextureTypeToLoad() = 0;
+        virtual TextureType getTextureTypeToLoad();
 
-        virtual GLenum getGLSLType(PixelFormat format) = 0;
+        virtual GLenum getGLSLType(PixelFormat format);
 
-        virtual GLenum getGLTarget() = 0;
+        virtual GLenum getGLTarget();
 
-        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
+        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
-        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
+        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels) = 0;
-
-    protected:
-        void checkDimensionsArePowerOfTwo(const uvec2 &dimensions);
-
-        void checkFirstImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
-
-        void checkOtherImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels);
     };
 
 } // namespace plt
 
 
-#endif // PLASTIC_UPLOADERTEXTURE_HPP
+#endif // PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::UploaderTexture
+/// \class plt::UploaderTextureCubemapArray
 ///
-/// \todo Utiliser glTexStorage* plutôt!! Nécéssite OpenGL 4.2
-/// \todo Centraliser les fontions pour verifier qu'il y a bien une image ou plusieurs, etc
 ///
 ////////////////////////////////////////////////////////////

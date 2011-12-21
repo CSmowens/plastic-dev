@@ -45,10 +45,8 @@ namespace plt
 {
     RenderTexture::RenderTexture
     (
-        const uvec2 &dimensions
     ) :
-    RenderTarget(),
-    m_dimensions(dimensions)
+    RenderTarget()
     {
         try
         {

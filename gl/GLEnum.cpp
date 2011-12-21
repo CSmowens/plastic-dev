@@ -179,6 +179,36 @@ namespace plt
     }
 
 
+    GLenum GLEnum::getGLSLTypeTexture1DArray(PixelFormat format)
+    {
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_1D_ARRAY;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
+    }
+
+
     GLenum GLEnum::getGLSLTypeTexture2D(PixelFormat format)
     {
         switch(format)
@@ -269,7 +299,7 @@ namespace plt
     }
 
 
-    GLenum GLEnum::getGLSLTypeTextureCubeMap(PixelFormat format)
+    GLenum GLEnum::getGLSLTypeTextureCubemap(PixelFormat format)
     {
         switch(format)
         {
@@ -292,6 +322,36 @@ namespace plt
 	        case PixelFormat::RGB32F:
 	        case PixelFormat::RGBA32F:
                 return GL_SAMPLER_CUBE;
+                break;
+
+            default:    throw std::runtime_error("Unregistered PixelFormat");    break;
+        }
+    }
+
+
+    GLenum GLEnum::getGLSLTypeTextureCubemapArray(PixelFormat format)
+    {
+        switch(format)
+        {
+	        case PixelFormat::R8U:
+	        case PixelFormat::RG8U:
+	        case PixelFormat::RGB8U:
+	        case PixelFormat::RGBA8U:
+
+            case PixelFormat::Depth16:
+            case PixelFormat::Depth24:
+            case PixelFormat::Depth32:
+
+	        case PixelFormat::R16F:
+	        case PixelFormat::RG16F:
+	        case PixelFormat::RGB16F:
+	        case PixelFormat::RGBA16F:
+
+	        case PixelFormat::R32F:
+	        case PixelFormat::RG32F:
+	        case PixelFormat::RGB32F:
+	        case PixelFormat::RGBA32F:
+                return GL_SAMPLER_CUBE_MAP_ARRAY;
                 break;
 
             default:    throw std::runtime_error("Unregistered PixelFormat");    break;

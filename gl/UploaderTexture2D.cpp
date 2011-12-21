@@ -109,7 +109,7 @@ namespace plt
         unsigned int levels
     )
     {
-        checkDimensionsArePlasticOfTwo(dimensions);
+        checkDimensionsArePowerOfTwo(dimensions);
        
         // Use glTexStorage2D instead, it's the same but OpenGL 4.2!! Remplacer même l'exception
 		//GLCheck(glTexStorage2D(GL_TEXTURE_2D, levels, GLEnum::getInternalFormat(format), dimensions.x, dimensions.y));

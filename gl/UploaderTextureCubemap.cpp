@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "UploaderTextureCubeMap.hpp"
+#include "UploaderTextureCubemap.hpp"
 
 #include <Plastic/Core/PixelFormatInfos.hpp>
 
@@ -40,7 +40,7 @@
 
 namespace plt
 {
-    TextureType UploaderTextureCubeMap::getTextureTypeToLoad
+    TextureType UploaderTextureCubemap::getTextureTypeToLoad
     (
     )   
     {
@@ -48,16 +48,16 @@ namespace plt
     }
 
 
-    GLenum UploaderTextureCubeMap::getGLSLType
+    GLenum UploaderTextureCubemap::getGLSLType
     (
         PixelFormat format
     )
     {
-        return GLEnum::getGLSLTypeTextureCubeMap(format);
+        return GLEnum::getGLSLTypeTextureCubemap(format);
     }
 
 
-    GLenum UploaderTextureCubeMap::getGLTarget
+    GLenum UploaderTextureCubemap::getGLTarget
     (
     )
     {
@@ -65,7 +65,7 @@ namespace plt
     }
 
 
-    void UploaderTextureCubeMap::checkImages
+    void UploaderTextureCubemap::checkImages
     (
         TextureMipmapFlag texMipMapFlag,
         const std::vector< std::shared_ptr<Image> > &images
@@ -79,7 +79,7 @@ namespace plt
     }
 
 
-    void UploaderTextureCubeMap::uploadImages
+    void UploaderTextureCubemap::uploadImages
     (
         TextureMipmapFlag texMipMapFlag,
         const std::vector< std::shared_ptr<Image> > &images
@@ -109,14 +109,14 @@ namespace plt
     }
 
 
-    void UploaderTextureCubeMap::allocateTextureMemory
+    void UploaderTextureCubemap::allocateTextureMemory
     (
         PixelFormat format, 
         const uvec2 &dimensions,
         unsigned int levels
     )
     {
-        checkDimensionsArePlasticOfTwo(dimensions);
+        checkDimensionsArePowerOfTwo(dimensions);
 
         unsigned int width = dimensions.x;
         unsigned int height = dimensions.y;

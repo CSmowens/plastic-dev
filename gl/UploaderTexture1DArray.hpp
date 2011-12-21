@@ -28,8 +28,8 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_UPLOADERTEXTURECUBEMAP_HPP
-#define PLASTIC_UPLOADERTEXTURECUBEMAP_HPP
+#ifndef PLASTIC_UPLOADERTEXTURE1DARRAY_HPP
+#define PLASTIC_UPLOADERTEXTURE1DARRAY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -41,7 +41,7 @@ namespace plt
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTextureCubeMap : public UploaderTexture
+    class UploaderTexture1DArray : public UploaderTexture
     {
     public:
         virtual TextureType getTextureTypeToLoad();
@@ -60,13 +60,13 @@ namespace plt
 } // namespace plt
 
 
-#endif // PLASTIC_UPLOADERTEXTURECUBEMAP_HPP
+#endif // PLASTIC_UPLOADERTEXTURE1DARRAY_HPP
 
 
 
 
 ////////////////////////////////////////////////////////////
-/// \class plt::UploaderTextureCubeMap
+/// \class plt::UploaderTexture1DArray
 ///
 ///
 ////////////////////////////////////////////////////////////

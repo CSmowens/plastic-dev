@@ -42,7 +42,7 @@
 
 namespace plt
 {
-    void UploaderTexture::checkDimensionsArePlasticOfTwo
+    void UploaderTexture::checkDimensionsArePowerOfTwo
     (
         const uvec2 &dimensions
     )
@@ -62,7 +62,7 @@ namespace plt
         uvec2 dimensions = (*image)[0].getDimensions();
 
 
-        checkDimensionsArePlasticOfTwo(dimensions);
+        checkDimensionsArePowerOfTwo(dimensions);
 
 
         if(texMipMapFlag == TextureMipmapFlag::FromImage)
