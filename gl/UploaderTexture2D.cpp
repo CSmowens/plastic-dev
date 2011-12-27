@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////
 #include "UploaderTexture2D.hpp"
 
-#include <Plastic/Core/PixelFormatInfos.hpp>
+#include <Plastic/Core/PixelFormat.hpp>
 
 #include "GLCheck.hpp"
 #include "GLEnum.hpp"
@@ -90,11 +90,11 @@ namespace plt
         {
             uvec2 dim = (*image)[i].getDimensions();
 
-            if( !getPixelFormatInfos(format).isCompressed() )
+            if( !PixelFormatInfos::getInfos(format).isCompressed() )
                 GLCheck( glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, dim.x, dim.y, GLEnum::getExternalFormat(format), GLEnum::getType(format), (*image)[i].getPixels() ));
 
             else
-                GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_2D, i, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * getPixelFormatInfos(format).size(), (*image)[i].getPixels()));
+                GLCheck( glCompressedTexSubImage2D(GL_TEXTURE_2D, i, 0, 0 , dim.x, dim.y, GLEnum::getExternalFormat(format), dim.x * dim.y * PixelFormatInfos::getInfos(format).size(), (*image)[i].getPixels()));
         }
 
         if(texMipMapFlag == TextureMipmapFlag::GenHardware)

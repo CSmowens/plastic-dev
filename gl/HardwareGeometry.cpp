@@ -162,7 +162,7 @@ namespace plt
             for(std::size_t i(0); i<m_declaration.count(); ++i)
             {
                 GLCheck(glVertexAttribPointer(m_locations[i], 
-                                              VertexElement::count(m_declaration[i].getType()), 
+                                              VertexElementTypeInfos::getInfos(m_declaration[i].getType()).count(), 
                                               GLEnum::getType(m_declaration[i].getType()), 
                                               GL_FALSE, 
                                               m_declaration.size(), 

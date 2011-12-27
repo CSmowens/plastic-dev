@@ -55,11 +55,11 @@ namespace plt
     )
     {
         if( hasSemantic(semantic) )
-            throw std::runtime_error("The vertex declaration have already the element with semantic \"" + VertexElement::toString(semantic) + '"');
+            throw std::runtime_error("The vertex declaration have already the element with semantic \"" + VertexElementSemanticInfos::getInfos(semantic).name() + '"');
 
         m_declaration.push_back( VertexElement(semantic, type, m_size) );
 
-        m_size += VertexElement::size(type);
+        m_size += VertexElementTypeInfos::getInfos(type).size();
     }
 
 

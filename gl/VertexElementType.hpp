@@ -34,6 +34,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <Plastic/OpenGL.hpp>
+
+#include <map>
 
 
 namespace plt
@@ -50,6 +53,31 @@ namespace plt
         Float2,
         Float3,
         Float4
+    };
+
+
+
+
+    class VertexElementTypeInfos
+    {
+    public:
+        VertexElementTypeInfos(unsigned int count, unsigned int size);
+
+        unsigned int count() const;
+
+        unsigned int size() const;
+
+
+
+        static VertexElementTypeInfos& getInfos(VertexElementType semantic);
+
+        static VertexElementType retrieveTypeFromGLType(GLenum type);
+
+    private:
+        static std::map<VertexElementType, VertexElementTypeInfos> m_typesInfos;
+
+        unsigned int m_count;
+        unsigned int m_size;
     };
 
 } // namespace plt

@@ -39,8 +39,6 @@
 #include "VertexElementSemantic.hpp"
 #include "VertexElementType.hpp"
 
-#include <map>
-#include <string>
 #include <vector>
 
 
@@ -64,32 +62,13 @@ namespace plt
 
         std::size_t getOffset() const;
 
-
-        static VertexElementSemantic toSemantic(const std::string &str);
-        
-        static std::string toString(VertexElementSemantic semantic);
-
-		static VertexElementType toType(GLenum type);
-
-        static std::size_t size(VertexElementType type);
-
-        static std::size_t count(VertexElementType type);
-
-    public:
+    private:
 		////////////////////////////////////////////////////////////
 		// Member data
 		////////////////////////////////////////////////////////////   
         VertexElementSemantic m_semantic; ///< The meaning of the element 
         VertexElementType m_type; ///< The type of element
         std::size_t m_offset; ///< 
-
-    private:
-        static const std::vector<std::size_t> m_sizeFromType;
-        static const std::vector<std::size_t> m_countFromType;
-
-        static const std::vector<std::string> m_nameFromSemantic;
-
-        static const std::map<std::string, VertexElementSemantic> m_semanticFromName;
     };
 
 

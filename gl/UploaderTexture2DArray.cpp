@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////
 #include "UploaderTexture2DArray.hpp"
 
-#include <Plastic/Core/PixelFormatInfos.hpp>
+#include <Plastic/Core/PixelFormat.hpp>
 
 #include "GLCheck.hpp"
 #include "GLEnum.hpp"

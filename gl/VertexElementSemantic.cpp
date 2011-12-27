@@ -33,8 +33,86 @@
 ////////////////////////////////////////////////////////////
 #include "VertexElementSemantic.hpp"
 
+#include <stdexcept>
+
 namespace plt
 {
+	std::map<VertexElementSemantic, VertexElementSemanticInfos> VertexElementSemanticInfos::m_semanticsInfos = 
+    {
+        std::make_pair(VertexElementSemantic::Position,    VertexElementSemanticInfos("VertexPosition")),
+        std::make_pair(VertexElementSemantic::Normal,      VertexElementSemanticInfos("VertexNormal")),
+        std::make_pair(VertexElementSemantic::Tangent,     VertexElementSemanticInfos("VertexTangent")),
+        std::make_pair(VertexElementSemantic::BiNormal,    VertexElementSemanticInfos("VertexBiNormal")),
+        std::make_pair(VertexElementSemantic::TexCoord0,   VertexElementSemanticInfos("VertexTexCoord0")),
+        std::make_pair(VertexElementSemantic::Color,       VertexElementSemanticInfos("VertexColor")),
+        std::make_pair(VertexElementSemantic::Weight,      VertexElementSemanticInfos("VertexWeight")),
+        std::make_pair(VertexElementSemantic::MatrixIndex, VertexElementSemanticInfos("VertexMatrixIndex")),
+    };
+
+
+
+    VertexElementSemanticInfos& VertexElementSemanticInfos::getInfos
+    (
+        VertexElementSemantic semantic
+    )
+    {
+        auto it = m_semanticsInfos.find(semantic);
+
+        if(it == m_semanticsInfos.end())
+            throw std::runtime_error("Unregistered VertexElementSemantic");
+
+        else
+            return it->second;
+    }
+
+
+
+
+    VertexElementSemantic VertexElementSemanticInfos::retrieveSemanticFromName
+    (
+        const std::string &name
+    )
+    {
+        for(auto it = m_semanticsInfos.begin(); it != m_semanticsInfos.end(); ++it)
+        {
+            if (it->second.name() == name)
+                return it->first;
+        }
+
+
+        throw std::runtime_error("Unknown semantic name");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    VertexElementSemanticInfos::VertexElementSemanticInfos
+    (
+        const std::string name
+    ) :
+    m_name(name)
+    {
+
+    }
+
+    const std::string& VertexElementSemanticInfos::name
+    (
+    ) const
+    {
+        return m_name;
+    }
 
 
 } // namespace plt

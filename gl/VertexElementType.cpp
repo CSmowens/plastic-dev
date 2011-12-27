@@ -33,8 +33,95 @@
 ////////////////////////////////////////////////////////////
 #include "VertexElementType.hpp"
 
+#include <stdexcept>
+
+
 namespace plt
 {
+	std::map<VertexElementType, VertexElementTypeInfos> VertexElementTypeInfos::m_typesInfos = 
+    {
+        std::make_pair(VertexElementType::Float1,    VertexElementTypeInfos(1, 4)),
+        std::make_pair(VertexElementType::Float2,    VertexElementTypeInfos(2, 8)),
+        std::make_pair(VertexElementType::Float3,    VertexElementTypeInfos(3, 12)),
+        std::make_pair(VertexElementType::Float4,    VertexElementTypeInfos(4, 16)),
+    };
+
+
+
+    VertexElementTypeInfos& VertexElementTypeInfos::getInfos
+    (
+        VertexElementType type
+    )
+    {
+        auto it = m_typesInfos.find(type);
+
+        if(it == m_typesInfos.end())
+            throw std::runtime_error("Unregistered VertexElementType");
+
+        else
+            return it->second;
+    }
+
+
+
+
+    VertexElementType VertexElementTypeInfos::retrieveTypeFromGLType
+    (
+        GLenum type
+    )
+    {
+        switch(type)
+        {
+            case GL_FLOAT:        return VertexElementType::Float1;   break;
+            case GL_FLOAT_VEC2:   return VertexElementType::Float2;   break;
+            case GL_FLOAT_VEC3:   return VertexElementType::Float3;   break;
+            case GL_FLOAT_VEC4:   return VertexElementType::Float4;   break;
+
+            default: throw std::runtime_error("Unknown OpenGL type"); break;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    VertexElementTypeInfos::VertexElementTypeInfos
+    (
+        unsigned int count,
+        unsigned int size
+    ) :
+    m_count(count),
+    m_size(size)
+    {
+
+    }
+
+
+    unsigned int VertexElementTypeInfos::count
+    (
+    ) const
+    {
+        return m_count;
+    }
+
+
+    unsigned int VertexElementTypeInfos::size
+    (
+    ) const
+    {
+        return m_size;
+    }
 
 
 } // namespace plt

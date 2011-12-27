@@ -34,7 +34,8 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
+#include <map>
+#include <string>
 
 namespace plt
 {
@@ -57,6 +58,29 @@ namespace plt
 
 	    Weight,
 	    MatrixIndex
+    };
+
+
+
+
+
+
+    class VertexElementSemanticInfos
+    {
+    public:
+        VertexElementSemanticInfos(const std::string name);
+
+        const std::string& name() const;
+
+
+        static VertexElementSemanticInfos& getInfos(VertexElementSemantic semantic);
+
+        static VertexElementSemantic retrieveSemanticFromName(const std::string &name);
+
+    private:
+        static std::map<VertexElementSemantic, VertexElementSemanticInfos> m_semanticsInfos;
+
+        std::string m_name;
     };
 
 } // namespace plt

@@ -256,7 +256,12 @@ namespace plt
 	)
 	{
 		for(auto it=m_attributes.begin(); it!=m_attributes.end(); ++it)
-            m_declaration.add( VertexElement::toSemantic(it->name), VertexElement::toType(it->type) );
+        {
+            m_declaration.add( 
+                              VertexElementSemanticInfos::retrieveSemanticFromName(it->name),
+                              VertexElementTypeInfos::retrieveTypeFromGLType(it->type) 
+                             );
+        }
 	}
 
 

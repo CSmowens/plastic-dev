@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////
 #include "UploaderTexture.hpp"
 
-#include <Plastic/Core/PixelFormatInfos.hpp>
+#include <Plastic/Core/PixelFormat.hpp>
 
 #include "GLCheck.hpp"
 #include "GLEnum.hpp"
@@ -89,7 +89,7 @@ namespace plt
 
         else if(texMipMapFlag == TextureMipmapFlag::GenHardware)
         {
-            if(getPixelFormatInfos(format).isCompressed())
+            if(PixelFormatInfos::getInfos(format).isCompressed())
                 throw std::runtime_error("Hardware mipmap generation is impossible on compressed format");
         }
     }
