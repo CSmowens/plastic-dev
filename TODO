@@ -37,8 +37,7 @@ Graphics:
     - Implémenter SceneManager de façon basique
     
 
-HardwareBuffer:
-    - Renommer la classe
+HardwareGeometry:
     - Separer VBO et VBO/IBO (à voir)
 
 
@@ -74,7 +73,6 @@ MediaManager:
 
 
 Shader:
-    - Ajouter Geometry Shader
     - Ajoutes shaders de la tesselation
 
 
@@ -101,7 +99,7 @@ RenderTexure:
 
 PixelFormat:
     - Ajouter les formats Depht et Stencil et DDS et donc mettre a jour GLEnum
-    - Ajouter des formats flottants
+    - Ajouter des formats integers
 
 
 GLEnum:
