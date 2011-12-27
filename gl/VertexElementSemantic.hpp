@@ -77,7 +77,7 @@ namespace plt
 
         static VertexElementSemantic retrieveSemanticFromName(const std::string &name);
 
-    private:
+    //private:
         static std::map<VertexElementSemantic, VertexElementSemanticInfos> m_semanticsInfos;
 
         std::string m_name;

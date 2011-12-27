@@ -40,6 +40,8 @@
 #define PLASTIC_DEBUG 1
 #include "GLCheck.hpp"
 
+#include "VertexElementSemantic.hpp"
+
 #include <algorithm>
 #include <stdexcept>
 
@@ -87,6 +89,8 @@ namespace plt
         for(auto it = shaders.begin(); it != shaders.end(); ++it)
 	        GLCheck(glAttachShader(m_program, (*it)->getOpenGLHandle()));
 
+        assignAttribsLocations();
+
 	    GLCheck(glLinkProgram(m_program));
         checkProgram();
 
@@ -94,18 +98,6 @@ namespace plt
 	    getAttributesInfos();
 
 	    extractDeclaration();
-        assignAttribsLocations();
-
-
-
-
-
-
-        // We need to re-link the program after bind attrib location...
-	    GLCheck(glLinkProgram(m_program));
-        checkProgram();
-
-        // Update la location des attributs et autres...
 	}
 
 
@@ -132,14 +124,11 @@ namespace plt
     (
     ) const
     {
-        if(m_declaration.count() != m_attributes.size())
-            throw std::runtime_error("Error in shader attributes, check declaration and attributes vector");
-
-        for(std::size_t i(0); i<m_attributes.size(); ++i)
+        for(auto it = VertexElementSemanticInfos::m_semanticsInfos.begin(); it != VertexElementSemanticInfos::m_semanticsInfos.end(); ++it)
         {
             GLCheck(glBindAttribLocation (m_program,
-                                          static_cast<unsigned int>(m_declaration[i].getSemantic()),
-                                          &m_attributes[i].name[0]
+                                          static_cast<unsigned int>(it->first),
+                                          &it->second.name()[0]
                                           ));
         }
     }

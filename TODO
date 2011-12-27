@@ -41,10 +41,6 @@ HardwareBuffer:
     - Renommer la classe
     - Separer VBO et VBO/IBO (à voir)
 
-    - Déresponsabilisé de la classe Program
-    - Utiliser les layouts(location = *), pour se dissocier même des locations!
-        - Pour cela fixer à chaque VertexSemantic une valeur
-
 
 SubGeometry:
     - Ajouter une Axis Aligned Box
@@ -90,8 +86,6 @@ Program:
 
     - Lorsqu'on récupère les uniform la doc dis qu'on peut nous renvoyer les built-in "gl_", faire le tris
 
-    - Dégager cette horreur de deuxième link et trouver une solution
-
 
 RenderTarget:
     - Voir si clear et m_clearMask doit se retrouver implémenter en direct et non en virtual
@@ -108,10 +102,6 @@ RenderTexure:
 PixelFormat:
     - Ajouter les formats Depht et Stencil et DDS et donc mettre a jour GLEnum
     - Ajouter des formats flottants
-
-
-PixelFormatInfos:
-    - Rendre le code plus digeste..
 
 
 GLEnum:

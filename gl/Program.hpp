@@ -146,6 +146,4 @@ namespace plt
 ///
 /// \todo Verifier que textureUnit < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
 ///
-/// \todo Sortir le deuxième link !!
-///
 ////////////////////////////////////////////////////////////
