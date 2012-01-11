@@ -67,8 +67,6 @@ namespace plt
         GLuint getOpenGLHandle() const;
 
     private:
-		GLuint createShader(GLenum type, const std::string &source);
-
         void initialize(ShaderType type, const std::string &shaderSource);
 
         void cleanUp();
