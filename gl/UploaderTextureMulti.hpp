@@ -27,8 +27,8 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTUREARRAY_HPP
-#define PLASTIC_UPLOADERTEXTUREARRAY_HPP
+#ifndef PLASTIC_UPLOADERTEXTUREMULTI_HPP
+#define PLASTIC_UPLOADERTEXTUREMULTI_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -40,7 +40,7 @@ namespace plt
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTextureArray : public UploaderTexture
+    class UploaderTextureMulti : public UploaderTexture
     {
     public:
         virtual TextureType getTextureTypeToLoad() = 0;
@@ -62,7 +62,7 @@ namespace plt
 } // namespace plt
 
 
-#endif // PLASTIC_UPLOADERTEXTUREARRAY_HPP
+#endif // PLASTIC_UPLOADERTEXTUREMULTI_HPP
 
 
 

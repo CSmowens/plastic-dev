@@ -28,45 +28,44 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-#define PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include "UploaderTextureMulti.hpp"
 
+#include <Plastic/Core/PixelFormat.hpp>
+
+#include "GLCheck.hpp"
+#include "GLEnum.hpp"
+
+#include <stdexcept>
+
 namespace plt
 {
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    class UploaderTextureCubemapArray : public UploaderTextureMulti
+    void UploaderTextureMulti::checkOtherImages
+    (
+        TextureMipmapFlag texMipMapFlag, 
+        const std::vector< std::shared_ptr<Image> > &images
+    )
     {
-    public:
-        virtual TextureType getTextureTypeToLoad();
+        unsigned int mipmapCount = (*images[0]).levels();
 
-        virtual GLenum getGLSLType(PixelFormat format);
+        PixelFormat baseFormat = (*images[0])[0].getFormat();
 
-        virtual GLenum getGLTarget();
+        for(std::size_t i(0); i<images.size(); ++i)
+        {
+            if((*images[i]).levels() != mipmapCount)
+                throw std::runtime_error("All images haven't got the same number of mipmap count");
 
-        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+            for(std::size_t j(0); j<mipmapCount; ++j)
+            {
+                if((*images[i])[j].getFormat() != baseFormat)
+                    throw std::runtime_error("A level haven't got the same pixel format");
 
-        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels);
-    };
+                if((*images[i])[j].getDimensions() != (*images[0])[j].getDimensions())
+                    throw std::runtime_error("A level haven't got the same dimensions");
+            }
+        }
+    }
 
 } // namespace plt
-
-
-#endif // PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::UploaderTextureCubemapArray
-///
-///
-////////////////////////////////////////////////////////////

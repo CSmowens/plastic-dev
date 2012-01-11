@@ -37,7 +37,7 @@
 
 #include "UploaderTexture.hpp"
 #include "UploaderTextureSingle.hpp"
-#include "UploaderTextureArray.hpp"
+#include "UploaderTextureMulti.hpp"
 #include "UploaderTexture1D.hpp"
 #include "UploaderTexture2D.hpp"
 #include "UploaderTextureCubemap.hpp"
@@ -66,7 +66,7 @@ namespace plt
         };
 
 
-        const std::vector< std::shared_ptr<UploaderTextureArray> > uploadersArray = 
+        const std::vector< std::shared_ptr<UploaderTextureMulti> > uploadersArray = 
         {
             std::make_shared<UploaderTextureCubemap>(),
             std::make_shared<UploaderTexture1DArray>(),
@@ -86,9 +86,9 @@ namespace plt
         }
 
 
-        std::shared_ptr<UploaderTextureArray> findUploaderArray(TextureType texType)
+        std::shared_ptr<UploaderTextureMulti> findUploaderArray(TextureType texType)
         {
-            auto it = std::find_if(uploadersArray.begin(), uploadersArray.end(), [texType](const std::shared_ptr<UploaderTextureArray> &u) {return u->getTextureTypeToLoad() == texType;} );
+            auto it = std::find_if(uploadersArray.begin(), uploadersArray.end(), [texType](const std::shared_ptr<UploaderTextureMulti> &u) {return u->getTextureTypeToLoad() == texType;} );
 
             if(it == uploadersArray.end())
                 throw std::runtime_error("No uploader for this texture type");
@@ -173,7 +173,7 @@ namespace plt
     {
         try
         {
-            //initialize
+            initializeEmptyTexture(texType, format, dimensions);
         }
 
         catch(const std::exception &e)
@@ -194,7 +194,7 @@ namespace plt
     {
         try
         {
-            //initialize
+            initializeTextureSingle(texType, texMipMapFlag, image);
         }
 
         catch(const std::exception &e)
@@ -215,7 +215,7 @@ namespace plt
     {
         try
         {
-            //initialize
+            initializeTextureArray(texType, texMipMapFlag, images);
         }
 
         catch(const std::exception &e)
@@ -314,6 +314,66 @@ namespace plt
     {
         return m_hasMipMap;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void Texture::initializeEmptyTexture
+    (
+        TextureType texType, 
+        PixelFormat format, 
+        const uvec2 &dimensions
+    )
+    {
+
+    }
+
+
+    void Texture::initializeTextureSingle
+    (
+        TextureType texType, 
+        TextureMipmapFlag texMipMapFlag, 
+        const std::shared_ptr<Image> &image
+    )
+    {
+
+    }
+
+
+    void Texture::initializeTextureArray
+    (
+        TextureType texType, 
+        TextureMipmapFlag texMipMapFlag, 
+        const std::vector< std::shared_ptr<Image> > &images
+    )
+    {
+
+    }
+
+
+
+
+
+
+
 
 
 /*

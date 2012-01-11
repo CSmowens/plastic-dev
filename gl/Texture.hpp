@@ -39,27 +39,13 @@
 
 #include <Plastic/OpenGL.hpp>
 
+#include "TextureType.hpp"
+
 #include <memory>
 #include <vector>
 
 namespace plt
 {
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    enum struct TextureType
-    {
-        OneDimension,
-        TwoDimensions,
-        Rectangle,
-        Cubemap,
-
-        OneDimensionArray,
-        TwoDimensionsArray,
-        CubemapArray
-    };
-
-
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
@@ -114,9 +100,11 @@ namespace plt
         static unsigned int nearestPowerOfTwo(unsigned int value);
 
     private:
-        //void initialize(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+        void initializeEmptyTexture(TextureType texType, PixelFormat format, const uvec2 &dimensions);
 
-        //void initialize(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        void initializeTextureSingle(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
+
+        void initializeTextureArray(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
         void cleanUp();
 

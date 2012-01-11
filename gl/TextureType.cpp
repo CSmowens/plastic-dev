@@ -28,45 +28,84 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-#define PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "UploaderTextureMulti.hpp"
+#include "TextureType.hpp"
+
+#include <stdexcept>
+
 
 namespace plt
 {
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    class UploaderTextureCubemapArray : public UploaderTextureMulti
+	std::map<TextureType, TextureTypeInfos> TextureTypeInfos::m_typesInfos = 
     {
-    public:
-        virtual TextureType getTextureTypeToLoad();
+        std::make_pair(TextureType::OneDimension,         TextureTypeInfos(true, false)),
+        std::make_pair(TextureType::TwoDimensions,        TextureTypeInfos(true, false)),
+        std::make_pair(TextureType::Rectangle,            TextureTypeInfos(true, false)),
 
-        virtual GLenum getGLSLType(PixelFormat format);
+        std::make_pair(TextureType::Cubemap,              TextureTypeInfos(false, true)),
 
-        virtual GLenum getGLTarget();
-
-        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-
-        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
-
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels);
+        std::make_pair(TextureType::OneDimensionArray,    TextureTypeInfos(false, true)),
+        std::make_pair(TextureType::TwoDimensionsArray,   TextureTypeInfos(false, true)),
+        std::make_pair(TextureType::CubemapArray,         TextureTypeInfos(false, true))
     };
 
+
+
+    TextureTypeInfos& TextureTypeInfos::getInfos
+    (
+        TextureType type
+    )
+    {
+        auto it = m_typesInfos.find(type);
+
+        if(it == m_typesInfos.end())
+            throw std::runtime_error("Unregistered TextureType");
+
+        else
+            return it->second;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    TextureTypeInfos::TextureTypeInfos
+    (
+        bool hasSingleImage, 
+        bool hasMultiImages
+    ) :
+    m_hasSingleImage(hasSingleImage),
+    m_hasMultiImages(hasMultiImages)
+    {
+
+    }
+
+
+    bool TextureTypeInfos::hasSingleImage
+    (
+    ) const
+    {
+        return m_hasSingleImage;
+    }
+
+
+    bool TextureTypeInfos::hasMultiImages
+    (
+    ) const
+    {
+        return m_hasMultiImages;
+    }
+
+
 } // namespace plt
-
-
-#endif // PLASTIC_UPLOADERTEXTURECUBEMAPARRAY_HPP
-
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::UploaderTextureCubemapArray
-///
-///
-////////////////////////////////////////////////////////////
