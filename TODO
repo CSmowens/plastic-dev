@@ -39,6 +39,7 @@ Graphics:
 
 HardwareGeometry:
     - Separer VBO et VBO/IBO (à voir)
+    - Passer la macro PLASTIC_BUFFER_OFFSET dans une fonction du namespace anonyme (à voir)
 
 
 SubGeometry:
