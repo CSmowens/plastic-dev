@@ -109,7 +109,11 @@ GLEnum:
 
 
 Texture:
-    - Ajouter le support pour 1DArray, 2DArray et CubeMapArray
+    - Les fonctions initializes nécessitent un bon refactoring
+
+
+UploaderTexture:
+    - Implémenter 1DArray, 2DArray et CubeMapArray
     - Utiliser glTexStorage
 
 

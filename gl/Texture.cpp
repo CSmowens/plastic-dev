@@ -332,15 +332,32 @@ namespace plt
         m_dimensions = dimensions;
         m_hasMipMap = false;
 
+        if(TextureTypeInfos::getInfos(texType).hasSingleImage() )
+        {
+            if(image != 1)
+                throw std::runtime_error("For single empty texture, imageCount must be equal to 1");
+
+            auto uploader = findUploaderSingle(texType);
+
+            m_target = uploader->getGLTarget();
+            m_glslType = uploader->getGLSLType(m_format);
+        }
+
+        else
+        {
+            auto uploader = findUploaderMulti(texType);
+
+            m_target = uploader->getGLTarget();
+            m_glslType = uploader->getGLSLType(m_format);
+        }
+
 
         GLCheck( glGenTextures(1, &m_texture) );
         bind();
-            if(! TextureTypeInfos::getInfos(texType).hasSingleImage() )
+            if(TextureTypeInfos::getInfos(texType).hasSingleImage() )
             {
                 auto uploader = findUploaderSingle(texType);
 
-                m_target = uploader->getGLTarget();
-                m_glslType = uploader->getGLSLType(m_format);
                 uploader->allocateTextureMemory(format, dimensions, 1);
             }
 
@@ -348,8 +365,6 @@ namespace plt
             {
                 auto uploader = findUploaderMulti(texType);
 
-                m_target = uploader->getGLTarget();
-                m_glslType = uploader->getGLSLType(m_format);
                 findUploaderMulti(texType)->allocateTextureMemory(format, dimensions, image, 1);
             }
         unbind();
@@ -364,7 +379,7 @@ namespace plt
     )
     {
         if(! TextureTypeInfos::getInfos(texType).hasSingleImage() )
-            throw std::runtime_error("");
+            throw std::runtime_error("Can't be a single texture typre");
 
 
         if((*image).levels() < 1)
@@ -407,7 +422,7 @@ namespace plt
     )
     {
         if(! TextureTypeInfos::getInfos(texType).hasMultiImages() )
-            throw std::runtime_error("");
+            throw std::runtime_error("Can't be a multi texture typre");
 
         if(images.size() < 1)
             throw std::runtime_error("No images when create texture");
