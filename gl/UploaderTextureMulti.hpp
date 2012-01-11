@@ -53,7 +53,7 @@ namespace plt
 
         virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
 
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels) = 0;
+        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int images, unsigned int levels) = 0;
 
     protected:
         void checkOtherImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);

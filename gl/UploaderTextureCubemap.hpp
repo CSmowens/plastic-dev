@@ -54,7 +54,7 @@ namespace plt
 
         virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
-        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels);
+        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int images, unsigned int levels);
     };
 
 } // namespace plt

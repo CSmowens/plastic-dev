@@ -66,7 +66,7 @@ namespace plt
         };
 
 
-        const std::vector< std::shared_ptr<UploaderTextureMulti> > uploadersArray = 
+        const std::vector< std::shared_ptr<UploaderTextureMulti> > uploadersMulti = 
         {
             std::make_shared<UploaderTextureCubemap>(),
             std::make_shared<UploaderTexture1DArray>(),
@@ -86,11 +86,11 @@ namespace plt
         }
 
 
-        std::shared_ptr<UploaderTextureMulti> findUploaderArray(TextureType texType)
+        std::shared_ptr<UploaderTextureMulti> findUploaderMulti(TextureType texType)
         {
-            auto it = std::find_if(uploadersArray.begin(), uploadersArray.end(), [texType](const std::shared_ptr<UploaderTextureMulti> &u) {return u->getTextureTypeToLoad() == texType;} );
+            auto it = std::find_if(uploadersMulti.begin(), uploadersMulti.end(), [texType](const std::shared_ptr<UploaderTextureMulti> &u) {return u->getTextureTypeToLoad() == texType;} );
 
-            if(it == uploadersArray.end())
+            if(it == uploadersMulti.end())
                 throw std::runtime_error("No uploader for this texture type");
 
             return (*it);
@@ -316,26 +316,6 @@ namespace plt
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     void Texture::initializeEmptyTexture
     (
         TextureType texType, 
@@ -354,7 +334,39 @@ namespace plt
         const std::shared_ptr<Image> &image
     )
     {
+        if(! TextureTypeInfos::getInfos(texType).hasSingleImage() )
+            throw std::runtime_error("");
 
+
+        if((*image).levels() < 1)
+            throw std::runtime_error("No levels in first image");
+
+        auto uploader = findUploaderSingle(texType);
+
+
+        m_texture = 0;
+        m_format = (*image)[0].getFormat();
+        m_textureType = texType;
+        m_textureMipMapFlag = texMipMapFlag;
+        m_dimensions = (*image)[0].getDimensions();
+
+        m_target = uploader->getGLTarget();
+        m_glslType = uploader->getGLSLType(m_format);
+
+        m_hasMipMap = (texMipMapFlag == TextureMipmapFlag::NoMipMap) ? false : true;
+
+
+        uploader->checkImage(texMipMapFlag, image);
+
+        GLCheck( glGenTextures(1, &m_texture) );
+        bind();
+            auto dim = (*image)[0].getDimensions();
+
+            unsigned int levels = (texMipMapFlag == TextureMipmapFlag::FromImage) ? Texture::getMipMapLevelsCount(dim.x, dim.y) + 1 : 1;
+
+            uploader->allocateTextureMemory(m_format, dim, levels);
+            uploader->uploadImage(texMipMapFlag, image);
+        unbind();
     }
 
 
@@ -365,7 +377,41 @@ namespace plt
         const std::vector< std::shared_ptr<Image> > &images
     )
     {
+        if(! TextureTypeInfos::getInfos(texType).hasMultiImages() )
+            throw std::runtime_error("");
 
+        if(images.size() < 1)
+            throw std::runtime_error("No images when create texture");
+
+        if((*images[0]).levels() < 1)
+            throw std::runtime_error("No levels in first image");
+
+        auto uploader = findUploaderMulti(texType);
+
+
+        m_texture = 0;
+        m_format = (*images[0])[0].getFormat();
+        m_textureType = texType;
+        m_textureMipMapFlag = texMipMapFlag;
+        m_dimensions = (*images[0])[0].getDimensions();
+
+        m_target = uploader->getGLTarget();
+        m_glslType = uploader->getGLSLType(m_format);
+
+        m_hasMipMap = (texMipMapFlag == TextureMipmapFlag::NoMipMap) ? false : true;
+
+
+        uploader->checkImages(texMipMapFlag, images);
+
+        GLCheck( glGenTextures(1, &m_texture) );
+        bind();
+            auto dim = (*images[0])[0].getDimensions();
+
+            unsigned int levels = (texMipMapFlag == TextureMipmapFlag::FromImage) ? Texture::getMipMapLevelsCount(dim.x, dim.y) + 1 : 1;
+
+            uploader->allocateTextureMemory(m_format, dim, images.size(), levels);
+            uploader->uploadImages(texMipMapFlag, images);
+        unbind();
     }
 
 
@@ -401,48 +447,6 @@ namespace plt
         GLCheck( glGenTextures(1, &m_texture) );
         bind();
             uploader->allocateTextureMemory(format, dimensions, 1);
-        unbind();
-    }
-
-
-    void Texture::initialize
-    (
-        TextureType texType, 
-        TextureMipmapFlag texMipMapFlag, 
-        const std::vector< std::shared_ptr<Image> > &images
-    )
-    {
-        if(images.size() < 1)
-            throw std::runtime_error("No images when create texture");
-
-        if((*images[0]).levels() < 1)
-            throw std::runtime_error("No levels in first image");
-
-        auto uploader = findUploader(texType);
-
-
-        m_texture = 0;
-        m_format = (*images[0])[0].getFormat();
-        m_textureType = texType;
-        m_textureMipMapFlag = texMipMapFlag;
-        m_dimensions = (*images[0])[0].getDimensions();
-
-        m_target = uploader->getGLTarget();
-        m_glslType = uploader->getGLSLType(m_format);
-
-        m_hasMipMap = (texMipMapFlag == TextureMipmapFlag::NoMipMap) ? false : true;
-
-
-        uploader->checkImages(texMipMapFlag, images);
-
-        GLCheck( glGenTextures(1, &m_texture) );
-        bind();
-            auto dim = (*images[0])[0].getDimensions();
-
-            unsigned int levels = (texMipMapFlag == TextureMipmapFlag::FromImage) ? Texture::getMipMapLevelsCount(dim.x, dim.y) + 1 : 1;
-
-            uploader->allocateTextureMemory(m_format, dim, levels);
-            uploader->uploadImages(texMipMapFlag, images);
         unbind();
     }
 */

@@ -90,6 +90,7 @@ namespace plt
     (
         PixelFormat format, 
         const uvec2 &dimensions,
+        unsigned int images,
         unsigned int levels
     )
     {
