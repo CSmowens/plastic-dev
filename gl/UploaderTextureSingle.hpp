@@ -27,20 +27,20 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTURE_HPP
-#define PLASTIC_UPLOADERTEXTURE_HPP
+#ifndef PLASTIC_UPLOADERTEXTURESINGLE_HPP
+#define PLASTIC_UPLOADERTEXTURESINGLE_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "Texture.hpp"
+#include "UploaderTexture.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTexture
+    class UploaderTextureSingle : public UploaderTexture
     {
     public:
         virtual TextureType getTextureTypeToLoad() = 0;
@@ -49,16 +49,17 @@ namespace plt
 
         virtual GLenum getGLTarget() = 0;
 
-    protected:
-        void checkDimensionsArePowerOfTwo(const uvec2 &dimensions);
+        virtual void checkImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image) = 0;
 
-        void checkFirstImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
+        virtual void uploadImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image) = 0;
+
+        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels) = 0;
     };
 
 } // namespace plt
 
 
-#endif // PLASTIC_UPLOADERTEXTURE_HPP
+#endif // PLASTIC_UPLOADERTEXTURESINGLE_HPP
 
 
 

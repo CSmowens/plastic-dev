@@ -33,14 +33,14 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "UploaderTexture.hpp"
+#include "UploaderTextureSingle.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTextureRect : public UploaderTexture
+    class UploaderTextureRect : public UploaderTextureSingle
     {
     public:
         virtual TextureType getTextureTypeToLoad();
@@ -49,9 +49,9 @@ namespace plt
 
         virtual GLenum getGLTarget();
 
-        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+        virtual void checkImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
 
-        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+        virtual void uploadImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
 
         virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels);
     };

@@ -65,26 +65,25 @@ namespace plt
     }
 
 
-    void UploaderTexture1D::checkImages
+    void UploaderTexture1D::checkImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
-        if((*images[0])[0].getDimensions().y != 1)
+        if((*image)[0].getDimensions().y != 1)
             throw std::runtime_error("1D texture must have an height of one");
 
-        checkFirstImage(texMipMapFlag, images[0]);
+        checkFirstImage(texMipMapFlag, image);
     }
 
 
-    void UploaderTexture1D::uploadImages
+    void UploaderTexture1D::uploadImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
-        auto image = images[0];
         PixelFormat format = (*image)[0].getFormat();
 
         unsigned int levelsCount = (texMipMapFlag == TextureMipmapFlag::FromImage) ? image->levels() : 1;

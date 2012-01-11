@@ -65,23 +65,22 @@ namespace plt
     }
 
 
-    void UploaderTexture2D::checkImages
+    void UploaderTexture2D::checkImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
-        checkFirstImage(texMipMapFlag, images[0]);
+        checkFirstImage(texMipMapFlag, image);
     }
 
 
-    void UploaderTexture2D::uploadImages
+    void UploaderTexture2D::uploadImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
-        auto image = images[0];
         PixelFormat format = (*image)[0].getFormat();
 
         unsigned int levelsCount = (texMipMapFlag == TextureMipmapFlag::FromImage) ? image->levels() : 1;

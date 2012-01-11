@@ -94,31 +94,4 @@ namespace plt
         }
     }
 
-
-    void UploaderTexture::checkOtherImages
-    (
-        TextureMipmapFlag texMipMapFlag, 
-        const std::vector< std::shared_ptr<Image> > &images
-    )
-    {
-        unsigned int mipmapCount = (*images[0]).levels();
-
-        PixelFormat baseFormat = (*images[0])[0].getFormat();
-
-        for(std::size_t i(0); i<images.size(); ++i)
-        {
-            if((*images[i]).levels() != mipmapCount)
-                throw std::runtime_error("All images haven't got the same number of mipmap count");
-
-            for(std::size_t j(0); j<mipmapCount; ++j)
-            {
-                if((*images[i])[j].getFormat() != baseFormat)
-                    throw std::runtime_error("A level haven't got the same pixel format");
-
-                if((*images[i])[j].getDimensions() != (*images[0])[j].getDimensions())
-                    throw std::runtime_error("A level haven't got the same dimensions");
-            }
-        }
-    }
-
 } // namespace plt

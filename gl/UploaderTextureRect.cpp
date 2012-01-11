@@ -65,10 +65,10 @@ namespace plt
     }
 
 
-    void UploaderTextureRect::checkImages
+    void UploaderTextureRect::checkImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
         if(texMipMapFlag != TextureMipmapFlag::NoMipMap)
@@ -76,13 +76,12 @@ namespace plt
     }
 
 
-    void UploaderTextureRect::uploadImages
+    void UploaderTextureRect::uploadImage
     (
         TextureMipmapFlag texMipMapFlag,
-        const std::vector< std::shared_ptr<Image> > &images
+        const std::shared_ptr<Image> &image
     )
     {
-        auto image = images[0];
         PixelFormat format = (*image)[0].getFormat();
 
         uvec2 dim = (*image)[0].getDimensions();

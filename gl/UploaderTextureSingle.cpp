@@ -27,46 +27,13 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTURE_HPP
-#define PLASTIC_UPLOADERTEXTURE_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "Texture.hpp"
+#include "UploaderTextureSingle.hpp"
 
 namespace plt
 {
-	/////////////////////////////////////////////////////////////////
-	///
-	/////////////////////////////////////////////////////////////////
-    class UploaderTexture
-    {
-    public:
-        virtual TextureType getTextureTypeToLoad() = 0;
-
-        virtual GLenum getGLSLType(PixelFormat format) = 0;
-
-        virtual GLenum getGLTarget() = 0;
-
-    protected:
-        void checkDimensionsArePowerOfTwo(const uvec2 &dimensions);
-
-        void checkFirstImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
-    };
 
 } // namespace plt
-
-
-#endif // PLASTIC_UPLOADERTEXTURE_HPP
-
-
-
-
-////////////////////////////////////////////////////////////
-/// \class plt::UploaderTexture
-///
-/// \todo Utiliser glTexStorage* plutôt!! Nécéssite OpenGL 4.2
-/// \todo Centraliser les fontions pour verifier qu'il y a bien une image ou plusieurs, etc
-///
-////////////////////////////////////////////////////////////

@@ -36,6 +36,8 @@
 #include "GLEnum.hpp"
 
 #include "UploaderTexture.hpp"
+#include "UploaderTextureSingle.hpp"
+#include "UploaderTextureArray.hpp"
 #include "UploaderTexture1D.hpp"
 #include "UploaderTexture2D.hpp"
 #include "UploaderTextureCubemap.hpp"
@@ -56,22 +58,39 @@ namespace plt
 {
     namespace
     {
-        const std::vector< std::shared_ptr<UploaderTexture> > uploaders = 
+        const std::vector< std::shared_ptr<UploaderTextureSingle> > uploadersSingle = 
         {
             std::make_shared<UploaderTexture1D>(),
             std::make_shared<UploaderTexture2D>(),
+            std::make_shared<UploaderTextureRect>()
+        };
+
+
+        const std::vector< std::shared_ptr<UploaderTextureArray> > uploadersArray = 
+        {
             std::make_shared<UploaderTextureCubemap>(),
-            std::make_shared<UploaderTextureRect>(),
             std::make_shared<UploaderTexture1DArray>(),
             std::make_shared<UploaderTexture2DArray>(),
             std::make_shared<UploaderTextureCubemapArray>()
         };
 
-        std::shared_ptr<UploaderTexture> findUploader(TextureType texType)
-        {
-            auto it = std::find_if(uploaders.begin(), uploaders.end(), [texType](const std::shared_ptr<UploaderTexture> &u) {return u->getTextureTypeToLoad() == texType;} );
 
-            if(it == uploaders.end())
+        std::shared_ptr<UploaderTextureSingle> findUploaderSingle(TextureType texType)
+        {
+            auto it = std::find_if(uploadersSingle.begin(), uploadersSingle.end(), [texType](const std::shared_ptr<UploaderTextureSingle> &u) {return u->getTextureTypeToLoad() == texType;} );
+
+            if(it == uploadersSingle.end())
+                throw std::runtime_error("No uploader for this texture type");
+
+            return (*it);
+        }
+
+
+        std::shared_ptr<UploaderTextureArray> findUploaderArray(TextureType texType)
+        {
+            auto it = std::find_if(uploadersArray.begin(), uploadersArray.end(), [texType](const std::shared_ptr<UploaderTextureArray> &u) {return u->getTextureTypeToLoad() == texType;} );
+
+            if(it == uploadersArray.end())
                 throw std::runtime_error("No uploader for this texture type");
 
             return (*it);
@@ -154,7 +173,28 @@ namespace plt
     {
         try
         {
-            initialize(texType, format, dimensions);
+            //initialize
+        }
+
+        catch(const std::exception &e)
+        {
+            cleanUp();
+
+            throw; //std::runtime_error("Error during Texture initialisation");
+        }  
+    }
+
+
+    Texture::Texture
+    (
+        TextureType texType, 
+        TextureMipmapFlag texMipMapFlag, 
+        const std::shared_ptr<Image> &image
+    )
+    {
+        try
+        {
+            //initialize
         }
 
         catch(const std::exception &e)
@@ -175,7 +215,7 @@ namespace plt
     {
         try
         {
-            initialize(texType, texMipMapFlag, images);
+            //initialize
         }
 
         catch(const std::exception &e)
@@ -276,6 +316,7 @@ namespace plt
     }
 
 
+/*
     void Texture::initialize
     (
         TextureType texType, 
@@ -344,6 +385,6 @@ namespace plt
             uploader->uploadImages(texMipMapFlag, images);
         unbind();
     }
-
+*/
 
 } // namespace plt

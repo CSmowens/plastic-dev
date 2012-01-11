@@ -82,6 +82,8 @@ namespace plt
 
         Texture(TextureType texType, PixelFormat format, const uvec2 &dimensions);
 
+        Texture(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
+
         Texture(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
         ~Texture();
@@ -112,9 +114,9 @@ namespace plt
         static unsigned int nearestPowerOfTwo(unsigned int value);
 
     private:
-        void initialize(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
+        //void initialize(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
 
-        void initialize(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        //void initialize(TextureType texType, PixelFormat format, const uvec2 &dimensions);
 
         void cleanUp();
 

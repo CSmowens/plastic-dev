@@ -27,20 +27,20 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////
 
-#ifndef PLASTIC_UPLOADERTEXTURE_HPP
-#define PLASTIC_UPLOADERTEXTURE_HPP
+#ifndef PLASTIC_UPLOADERTEXTUREARRAY_HPP
+#define PLASTIC_UPLOADERTEXTUREARRAY_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "Texture.hpp"
+#include "UploaderTexture.hpp"
 
 namespace plt
 {
 	/////////////////////////////////////////////////////////////////
 	///
 	/////////////////////////////////////////////////////////////////
-    class UploaderTexture
+    class UploaderTextureArray : public UploaderTexture
     {
     public:
         virtual TextureType getTextureTypeToLoad() = 0;
@@ -49,16 +49,20 @@ namespace plt
 
         virtual GLenum getGLTarget() = 0;
 
-    protected:
-        void checkDimensionsArePowerOfTwo(const uvec2 &dimensions);
+        virtual void checkImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
 
-        void checkFirstImage(TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
+        virtual void uploadImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images) = 0;
+
+        virtual void allocateTextureMemory(PixelFormat format, const uvec2 &dimensions, unsigned int levels) = 0;
+
+    protected:
+        void checkOtherImages(TextureMipmapFlag texMipMapFlag, const std::vector< std::shared_ptr<Image> > &images);
     };
 
 } // namespace plt
 
 
-#endif // PLASTIC_UPLOADERTEXTURE_HPP
+#endif // PLASTIC_UPLOADERTEXTUREARRAY_HPP
 
 
 
