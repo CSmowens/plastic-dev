@@ -168,12 +168,13 @@ namespace plt
     (
         TextureType texType, 
         PixelFormat format,
+        unsigned int image,
         const uvec2 &dimensions
     )
     {
         try
         {
-            initializeEmptyTexture(texType, format, dimensions);
+            initializeEmptyTexture(texType, format, image, dimensions);
         }
 
         catch(const std::exception &e)
@@ -319,11 +320,39 @@ namespace plt
     void Texture::initializeEmptyTexture
     (
         TextureType texType, 
-        PixelFormat format, 
+        PixelFormat format,
+        unsigned int image,
         const uvec2 &dimensions
     )
     {
+        m_texture = 0;
+        m_format = format;
+        m_textureType = texType;
+        m_textureMipMapFlag = TextureMipmapFlag::NoMipMap;
+        m_dimensions = dimensions;
+        m_hasMipMap = false;
 
+
+        GLCheck( glGenTextures(1, &m_texture) );
+        bind();
+            if(! TextureTypeInfos::getInfos(texType).hasSingleImage() )
+            {
+                auto uploader = findUploaderSingle(texType);
+
+                m_target = uploader->getGLTarget();
+                m_glslType = uploader->getGLSLType(m_format);
+                uploader->allocateTextureMemory(format, dimensions, 1);
+            }
+
+            else
+            {
+                auto uploader = findUploaderMulti(texType);
+
+                m_target = uploader->getGLTarget();
+                m_glslType = uploader->getGLSLType(m_format);
+                findUploaderMulti(texType)->allocateTextureMemory(format, dimensions, image, 1);
+            }
+        unbind();
     }
 
 
@@ -414,41 +443,5 @@ namespace plt
         unbind();
     }
 
-
-
-
-
-
-
-
-
-/*
-    void Texture::initialize
-    (
-        TextureType texType, 
-        PixelFormat format,
-        const uvec2 &dimensions
-    )
-    {
-        auto uploader = findUploader(texType);
-
-
-        m_texture = 0;
-        m_format = format;
-        m_textureType = texType;
-        m_textureMipMapFlag = TextureMipmapFlag::NoMipMap;
-        m_dimensions = dimensions;
-        m_hasMipMap = false;
-
-        m_target = uploader->getGLTarget();
-        m_glslType = uploader->getGLSLType(m_format);
-
-
-        GLCheck( glGenTextures(1, &m_texture) );
-        bind();
-            uploader->allocateTextureMemory(format, dimensions, 1);
-        unbind();
-    }
-*/
 
 } // namespace plt

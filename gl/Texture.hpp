@@ -66,7 +66,7 @@ namespace plt
     public:
         Texture();
 
-        Texture(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        Texture(TextureType texType, PixelFormat format, unsigned int image, const uvec2 &dimensions);
 
         Texture(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
 
@@ -100,7 +100,7 @@ namespace plt
         static unsigned int nearestPowerOfTwo(unsigned int value);
 
     private:
-        void initializeEmptyTexture(TextureType texType, PixelFormat format, const uvec2 &dimensions);
+        void initializeEmptyTexture(TextureType texType, PixelFormat format, unsigned int image, const uvec2 &dimensions);
 
         void initializeTextureSingle(TextureType texType, TextureMipmapFlag texMipMapFlag, const std::shared_ptr<Image> &image);
 
@@ -139,5 +139,7 @@ namespace plt
 /// \todo Etre exception safe
 /// \todo Sortir le #define PLASTIC_DEBUG 1
 /// \todo Utiliser les delegating constructor pour le constructeur par defaut
+/// 
+/// \todo Les fonctions initialiaze nécessite un refactoring...
 ///
 ////////////////////////////////////////////////////////////
